@@ -16,6 +16,11 @@ screen = pygame.display.set_mode(size)
 ball = pygame.image.load("intro_ball.gif")
 ballrect = ball.get_rect()
 
+def render():
+    screen.fill(black)
+    screen.blit(ball, ballrect)
+    pygame.display.flip()
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
@@ -26,6 +31,4 @@ while True:
     if ballrect.top < 0 or ballrect.bottom > height:
         speed[1] = -speed[1]
 
-    screen.fill(black)
-    screen.blit(ball, ballrect)
-    pygame.display.flip()
+    render()
