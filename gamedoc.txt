@@ -1,0 +1,59 @@
+===================================================================================================================================================================================
+
+
+GAME DOCUMENTATION
+
+
+===================================================================================================================================================================================
+
+IMMEDIATE TO-DO
+
+-add game state (paused or not)
+-add update functionality to Entity, as well as the variable to control whether updates run or not
+-add other functionality to Entity (Solid, Active, etc. These will have default values in Entity, but almost all child Entity types will overwrite with their own default values)
+-clean up game.py (move functions to outside files when possible)
+-begin creating subclasses of Entity (starting with EntityUI and EntityGameplay)
+
+===================================================================================================================================================================================
+
+ENTITY SYSTEM:
+
+Anything that needs to be drawn on screen, handles any kind of logic separate from the main game loop, or serves some other temporary purpose,
+is an entity. The player, enemies, walls, keys, doors, etc., are all examples of entities. However, not everything is the same object type.
+Entity is the main entity object. It handles the primary functions: being created, being destroyed, updating, and handling the entity's image.
+Entity itself will almost never be used specifically. Instead, subclasses of Entity, such as EntityPlayer, will be used instead, to add the
+necessary functionality. There will be multiple layers of subclasses, to allow for ease of use. These are described below:
+
+Entity:
+
+the original entity object. handles creation, destruction, updating, and image handling.
+
+    EntityUI:
+
+    covers entities which will not move when the screen moves (healthbar, points [if added], player HUD), which will not be paused while the screen is moving,
+    and will continue running when the game is paused. note- will never be solid (preventing player movement)
+
+    EntityGameplay:
+
+    covers entities which will move when the screen moves (changing stages), which will be paused when the screen is moving, and which will stop updating
+    when the game is paused (or the gameplay state is paused)
+
+        EntityActive:
+
+        covers entities which have speed, friction (possibly?), acceleration, etc. This includes EntityPlayer
+
+            EntityAlive:
+
+            covers entities which have health, some form of damage, and which are destroyed when they lose their health. Includes EntityPlayer and EntityEnemy
+
+                EntityPlayer:
+
+                is the player object. handles movement for the player, as well as their attacks and dodges
+
+                EntityEnemy:
+
+                is the parent of all enemy entity types
+
+        EntityWall:
+
+        covers the walls which make up the game's stages
