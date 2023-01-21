@@ -25,7 +25,19 @@ DISPLAY_BLACK = 0, 0, 0
 
 screen = pygame.display.set_mode(DISPLAY_SIZE)
 
+pygame.display.set_caption("")
+
 #endregion
+
+#region Setup game
+
+class MainGame:
+    GameState = "begin"
+
+Game = MainGame()
+
+#endregion
+
 
 #region Load images (add line for every image file)
 
@@ -43,11 +55,6 @@ def addImageSource(source_string):
     img.ImageLoad = pygame.image.load("assets/"+source_string+".gif")
     ImageSourceList.append(img)
 
-#endregion
-
-addImageSource("player")
-addImageSource("intro_ball")
-
 def getImageSource(source_string):
     for i in ImageSourceList:
         if (i.ImageID == source_string): return i
@@ -56,22 +63,54 @@ def getImageSource(source_string):
 
 #endregion
 
+addImageSource("player")
+addImageSource("intro_ball")
+
+pygame.display.set_icon(getImageSource("player").ImageLoad)
+
+#endregion
+
+#region Handle entities
+
+#list of all entity types (classes). used as a list of constants to create entities through destroyEntity
+
+class EntityTypes:
+    def __init__(self):
+        Player = 0
+        Wall = 1
+        Enemy = 2
+        Example = 3
+
+entities = EntityTypes()
+
+
+
+
 EntityIDGenerator = 1000
+
+def generateEntityID():
+    global EntityIDGenerator
+    EntityIDGenerator += 1
+    return EntityIDGenerator
 
 EntityList = []
 
 class Entity:
-    EntityID = EntityIDGenerator
-    EntityIDGenerator += 1
-    EntityName = ""
-    EntityImageSource = ""
+    def __init__(self):
+            self.EntityID = 0
+            self.EntityName = ""
+            self.EntityImageSource = ""
 
-    EntityRect = pygame.Rect(0,0,0,0)
+            self.EntityRect = pygame.Rect(0,0,0,0)
 
-    EntityVisible = True
+            self.EntityVisible = True
 
-def createEntity(entity_name, entity_image_src, entity_rect):
+
+def createEntity(entity_name, entity_rect=(0,0,0,0), entity_image_src=""):
     entity = Entity()
+
+    entity.EntityID = generateEntityID()
+
     entity.EntityName = entity_name
     entity.EntityImageSource = entity_image_src
     entity.EntityRect = pygame.Rect(entity_rect)
@@ -87,7 +126,9 @@ def getEntityByID(entity_id):
     for i in EntityList:
         if (i.EntityID == entity_id): return EntityList.i
 
-createEntity("Player","player",(32,32,8,8))
+#endregion
+
+createEntity("Player",(40,16,8,8),"player")
 
 speed = [1, 1]
 
@@ -98,7 +139,7 @@ def render():
     screen.fill(DISPLAY_BLACK)
 
     for i in EntityList:
-        if (i.EntityVisible == True):
+        if (i.EntityVisible == True and i.EntityImageSource != ""):
             tmp_rect = i.EntityRect
             screen.blit(pygame.transform.scale_by(getImageSource(i.EntityImageSource).ImageLoad,DISPLAY_SCALE),(tmp_rect.left*DISPLAY_SCALE,tmp_rect.top*DISPLAY_SCALE,0,0))
 
