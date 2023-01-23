@@ -61,6 +61,14 @@ def getImageSource(source_string):
 
     return ""
 
+def getImageSourceRect(source_string):
+    for i in ImageSourceList:
+        if (i.ImageID == source_string): return i.ImageLoad.get_rect()
+
+    return -1
+
+
+
 #endregion
 
 addImageSource("player")
@@ -76,15 +84,25 @@ pygame.display.set_icon(getImageSource("player").ImageLoad)
 
 class EntityTypes:
     def __init__(self):
-        Player = 0
-        Wall = 1
-        Enemy = 2
-        Example = 3
+
+        self.Player = 0
+        self.Wall = 1
+        self.Enemy = 2
+        self.Example = 3
+
+    def getNewEntity(self,entity_type):
+        match entity_type:
+
+            case self.Player:
+                return Entity()
+
+            case self.Wall:
+                return Entity()
+
+            case _:
+                return Entity()
 
 entities = EntityTypes()
-
-
-
 
 EntityIDGenerator = 1000
 
@@ -98,6 +116,7 @@ EntityList = []
 class Entity:
     def __init__(self):
             self.EntityID = 0
+            self.EntityType = -1
             self.EntityName = ""
             self.EntityImageSource = ""
 
@@ -105,9 +124,13 @@ class Entity:
 
             self.EntityVisible = True
 
+            self.shouldUpdate = True
 
-def createEntity(entity_name, entity_rect=(0,0,0,0), entity_image_src=""):
-    entity = Entity()
+    def update(self):
+        print(self.EntityName)
+
+def createEntity(entity_type=-1,entity_name="", entity_rect=(0,0,0,0), entity_image_src=""):
+    entity = entities.getNewEntity(entity_type)
 
     entity.EntityID = generateEntityID()
 
@@ -118,7 +141,7 @@ def createEntity(entity_name, entity_rect=(0,0,0,0), entity_image_src=""):
 
 def destroyEntity(entity_id):
     for i in EntityList:
-        if (i.EntityID == entity_id or i.EntityName == entity_id):
+        if (i.EntityID == entity_id or i.EntityName == entity_id or i.EntityType == entity_id):
             print("destroyed "+i.EntityName)
             EntityList.remove(i)
 
@@ -128,12 +151,14 @@ def getEntityByID(entity_id):
 
 #endregion
 
-createEntity("Player",(40,16,8,8),"player")
+createEntity(entities.Player,"Player",(16,16,8,8),"player")
 
 speed = [1, 1]
 
 ball = pygame.image.load("assets/intro_ball.gif")
 ballrect = ball.get_rect()
+
+#region Render
 
 def render():
     screen.fill(DISPLAY_BLACK)
@@ -141,10 +166,22 @@ def render():
     for i in EntityList:
         if (i.EntityVisible == True and i.EntityImageSource != ""):
             tmp_rect = i.EntityRect
-            screen.blit(pygame.transform.scale_by(getImageSource(i.EntityImageSource).ImageLoad,DISPLAY_SCALE),(tmp_rect.left*DISPLAY_SCALE,tmp_rect.top*DISPLAY_SCALE,0,0))
+            tmp_img = pygame.transform.scale_by(getImageSource(i.EntityImageSource).ImageLoad,DISPLAY_SCALE)
+            tmp_imgrect = getImageSourceRect(i.EntityImageSource)
+            screen.blit(tmp_img,((tmp_rect.centerx-tmp_imgrect.width/2)*DISPLAY_SCALE,(tmp_rect.centery-tmp_imgrect.height/2)*DISPLAY_SCALE,0,0))
 
     pygame.display.flip()
 
+
+#endregion
+
+#region Logic
+
+def update_all_entities():
+    for i in EntityList:
+        i.update()
+
+#endregion
 
 #region Main loop
 
@@ -157,11 +194,7 @@ while True:
                 print("hello")
                 destroyEntity("Player")
 
-    ballrect = ballrect.move(speed)
-    if ballrect.left < 0 or ballrect.right > DISPLAY_WIDTH:
-        speed[0] = -speed[0]
-    if ballrect.top < 0 or ballrect.bottom > DISPLAY_HEIGHT:
-        speed[1] = -speed[1]
+    update_all_entities()
 
     render()
 
