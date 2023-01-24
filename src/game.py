@@ -116,11 +116,14 @@ def createEntity(entity_type=-1,entity_name="", entity_rect=(0,0,0,0), entity_im
     entity.EntityRect = pygame.Rect(entity_rect)
     EntityList.append(entity)
 
+    entity.onCreated(EntityList,Game)
+
 def destroyEntity(entity_id):
     for i in EntityList:
         if (i.EntityID == entity_id or i.EntityName == entity_id or i.EntityType == entity_id):
             print("destroyed "+i.EntityName)
             EntityList.remove(i)
+            i.onDestroyed(EntityList,Game)
 
 def getEntityByID(entity_id):
     for i in EntityList:
@@ -162,7 +165,8 @@ def update_all_entities(input_list):
         if ((not i.RestrictUpdate) and Game.GameState in i.UpdateStates):
             if (i.RequiresInputs):
                 i.Inputs = input_list
-            i.update(EntityList,Game)         
+            i.onUpdate(EntityList,Game)
+            i.Inputs = []        
 
 #endregion
 

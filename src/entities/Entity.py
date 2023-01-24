@@ -25,12 +25,41 @@ class Entity:
 
             self.Inputs = []
 
-    def update(self,entity_list,game):
+    def onCreated(self,entity_list,game):
+        '''
+        An entity's creation function.
+        This function will only be run once, when the entity is created,
+        and it will ONLY run when the entity is created through the
+        createEntity method. Useful for initial actions for entities and
+        behaviour that should be run immediately for the entity, but
+        that don't make sense to include in __init__
+        '''
+        pass
+
+    def onDestroyed(self,entity_list,game):
+        '''
+        An entity's destruction function.
+        This function will only be run once, when the entity is destroyed,
+        and it will ONLY run when the entity is destroyed through the
+        destroyEntity function. Useful for wrapping up entity logic, or
+        handling events which should happen when an entity is destroyed,
+        without including it in all the possible behaviours which might
+        be used to destroy entities. Also prevents from having to include
+        this type of functionality in each entity's onUpdate event.
+        '''
+        pass
+
+    def onUpdate(self,entity_list,game):
         '''
         An entity's update function.
         Every time the main loop is run, all entities in the
         EntityList are checked to see if their own update
         function should run. If yes, then run the function.
         '''
+        try:
+            pass
+        except:
+            print() #will be replaced by custom error message handler. that way i will know when a type of error was thrown, and where, in my own preferred way
+        
         pass
 
