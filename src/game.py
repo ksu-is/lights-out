@@ -9,11 +9,10 @@ Main game file. Includes setup, game variables, and the main loop
 import sys, pygame
 pygame.init()
 
-import render_helper as rh
-
 from common import states
+from common import EntityTypeList
 
-import entities.Entity
+from entities.Entity import Entity
 
 #endregion
 
@@ -35,8 +34,6 @@ pygame.display.set_caption("")
 
 #region Setup game
 
-
-
 class MainGame:
     GameState = states.NORMAL
 
@@ -45,7 +42,7 @@ Game = MainGame()
 #endregion
 
 
-#region Load images (add line for every image file)
+#region Handle images (add images here)
 
 ImageSourceList = []
 
@@ -84,31 +81,21 @@ pygame.display.set_icon(getImageSource("player").ImageLoad)
 
 #endregion
 
-#region Handle entities
+#region Handle entities (add entities here)
 
-#list of all entity types (classes). used as a list of constants to create entities through destroyEntity
+def getNewEntity(entity_type):
+    match entity_type:
 
-class EntityTypes:
-    def __init__(self):
+        case EntityTypeList.Player:
+            return Entity()
 
-        self.Player = 0
-        self.Wall = 1
-        self.Enemy = 2
-        self.Example = 3
+        case EntityTypeList.Wall:
+            return Entity()
 
-    def getNewEntity(self,entity_type):
-        match entity_type:
+        case _:
+            return Entity()
 
-            case self.Player:
-                return Entity()
-
-            case self.Wall:
-                return Entity()
-
-            case _:
-                return Entity()
-
-EntityTypeList = EntityTypes()
+#region Handle entity helpers
 
 EntityIDGenerator = 1000
 
@@ -119,35 +106,8 @@ def generateEntityID():
 
 EntityList = []
 
-class Entity:
-    def __init__(self):
-            self.EntityID = 0
-            self.EntityType = -1
-            self.EntityName = ""
-            self.EntityImageSource = ""
-
-            self.EntityRect = pygame.Rect(0,0,0,0)
-
-            self.EntityVisible = True
-
-            self.RestrictUpdate = False
-            self.UpdateStates = [states.NORMAL]
-
-            self.RequiresInputs = True #eventually replace this with false, Player and UI elements will likely be the only entities which need inputs
-
-            self.Inputs = []
-
-    def update(self,entity_list,game):
-        '''
-        An entity's update function.
-        Every time the main loop is run, all entities in the
-        EntityList are checked to see if their own update
-        function should run. If yes, then run the function.
-        '''
-        pass
-
 def createEntity(entity_type=-1,entity_name="", entity_rect=(0,0,0,0), entity_image_src=""):
-    entity = EntityTypeList.getNewEntity(entity_type)
+    entity = getNewEntity(entity_type)
 
     entity.EntityID = generateEntityID()
 
@@ -165,6 +125,8 @@ def destroyEntity(entity_id):
 def getEntityByID(entity_id):
     for i in EntityList:
         if (i.EntityID == entity_id): return EntityList.i
+
+#endregion
 
 #endregion
 
