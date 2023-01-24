@@ -12,6 +12,8 @@ pygame.init()
 from common import states
 from common import EntityTypeList
 
+import error
+
 from entities.Entity import Entity
 
 #endregion

@@ -7,5 +7,23 @@ formats for custom print messages for error and exception
 handling.
 '''
 
-def printError(error_string):
-    pass
+import traceback
+
+def causeError(error_type_string,error_desc_string,error_location):
+    tmp_string = '''
+    ====================================================\n\n
+    Error! An expected problem occurred!\n\n
+    ----------------------------------------------------\n
+    Type: '''+error_type_string+'''\n
+    ----------------------------------------------------\n
+    Description: '''+error_desc_string+'''\n
+    ----------------------------------------------------\n
+    File location: '''+error_location+'''\n
+    ----------------------------------------------------\n
+    Full traceback: '''+traceback.format_exc()+'''\n
+    ====================================================
+    '''
+    print(tmp_string)
+
+    exit()
+    
