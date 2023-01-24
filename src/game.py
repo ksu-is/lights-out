@@ -1,6 +1,6 @@
 '''
 
-This is a game in python.
+Main game file. Includes setup, game variables, and the main loop
 
 '''
 
@@ -10,6 +10,10 @@ import sys, pygame
 pygame.init()
 
 import render_helper as rh
+
+from common import states
+
+import entities.Entity
 
 #endregion
 
@@ -31,8 +35,10 @@ pygame.display.set_caption("")
 
 #region Setup game
 
+
+
 class MainGame:
-    GameState = "begin"
+    GameState = states.NORMAL
 
 Game = MainGame()
 
@@ -102,7 +108,7 @@ class EntityTypes:
             case _:
                 return Entity()
 
-entities = EntityTypes()
+EntityTypeList = EntityTypes()
 
 EntityIDGenerator = 1000
 
@@ -124,13 +130,24 @@ class Entity:
 
             self.EntityVisible = True
 
-            self.shouldUpdate = True
+            self.RestrictUpdate = False
+            self.UpdateStates = [states.NORMAL]
 
-    def update(self):
-        print(self.EntityName)
+            self.RequiresInputs = True #eventually replace this with false, Player and UI elements will likely be the only entities which need inputs
+
+            self.Inputs = []
+
+    def update(self,entity_list,game):
+        '''
+        An entity's update function.
+        Every time the main loop is run, all entities in the
+        EntityList are checked to see if their own update
+        function should run. If yes, then run the function.
+        '''
+        pass
 
 def createEntity(entity_type=-1,entity_name="", entity_rect=(0,0,0,0), entity_image_src=""):
-    entity = entities.getNewEntity(entity_type)
+    entity = EntityTypeList.getNewEntity(entity_type)
 
     entity.EntityID = generateEntityID()
 
@@ -151,12 +168,13 @@ def getEntityByID(entity_id):
 
 #endregion
 
-createEntity(entities.Player,"Player",(16,16,8,8),"player")
 
-speed = [1, 1]
 
-ball = pygame.image.load("assets/intro_ball.gif")
-ballrect = ball.get_rect()
+
+createEntity(EntityTypeList.Player,"Player",(16,16,8,8),"player")
+
+
+
 
 #region Render
 
@@ -177,9 +195,12 @@ def render():
 
 #region Logic
 
-def update_all_entities():
+def update_all_entities(input_list):
     for i in EntityList:
-        i.update()
+        if ((not i.RestrictUpdate) and Game.GameState in i.UpdateStates):
+            if (i.RequiresInputs):
+                i.Inputs = input_list
+            i.update(EntityList,Game)         
 
 #endregion
 
@@ -194,7 +215,7 @@ while True:
                 print("hello")
                 destroyEntity("Player")
 
-    update_all_entities()
+    update_all_entities(pygame.event.get())
 
     render()
 
