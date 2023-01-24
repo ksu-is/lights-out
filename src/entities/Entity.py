@@ -61,5 +61,4 @@ class Entity:
         except:
             print() #will be replaced by custom error message handler. that way i will know when a type of error was thrown, and where, in my own preferred way
         
-        pass
 
