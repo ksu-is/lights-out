@@ -9,7 +9,7 @@ handling.
 
 import traceback
 
-def causeError(error_type_string,error_desc_string,error_location):
+def causeError(error_type_string,error_desc_string):
     tmp_string = '''
     ====================================================\n\n
     Error! An expected problem occurred!\n\n
@@ -17,8 +17,6 @@ def causeError(error_type_string,error_desc_string,error_location):
     Type: '''+error_type_string+'''\n
     ----------------------------------------------------\n
     Description: '''+error_desc_string+'''\n
-    ----------------------------------------------------\n
-    File location: '''+error_location+'''\n
     ----------------------------------------------------\n
     Full traceback: '''+traceback.format_exc()+'''\n
     ====================================================

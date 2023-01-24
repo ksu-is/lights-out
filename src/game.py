@@ -167,7 +167,10 @@ def update_all_entities(input_list):
         if ((not i.RestrictUpdate) and Game.GameState in i.UpdateStates):
             if (i.RequiresInputs):
                 i.Inputs = input_list
-            i.onUpdate(EntityList,Game)
+            try:
+                i.onUpdate(EntityList,Game)
+            except:
+                error.causeError("Updating Entity Error: "+i.EntityName,"There was a problem in the onUpdate function of this entity") 
             i.Inputs = []        
 
 #endregion

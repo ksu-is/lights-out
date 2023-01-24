@@ -57,9 +57,6 @@ class Entity:
         EntityList are checked to see if their own update
         function should run. If yes, then run the function.
         '''
-        try:
-            pass
-        except:
-            error.causeError("Updating Entity Error: "+self.EntityName,"There was a problem in the onUpdate function of this entity",__file__) #will be replaced by custom error message handler. that way i will know when a type of error was thrown, and where, in my own preferred way
-        
+
+        pass
 
