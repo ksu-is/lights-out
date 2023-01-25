@@ -28,9 +28,11 @@ DISPLAY_SCALE = DISPLAY_WIDTH / SCREEN_WIDTH
 
 DISPLAY_BLACK = 0, 0, 0
 
-screen = pygame.display.set_mode(DISPLAY_SIZE)
+screen = pygame.display.set_mode(DISPLAY_SIZE, pygame.RESIZABLE)
 
 pygame.display.set_caption("")
+
+pygame.mouse.set_visible(False)
 
 #endregion
 
@@ -77,6 +79,7 @@ def getImageSourceRect(source_string):
 #endregion
 
 addImageSource("player")
+addImageSource("mouse")
 addImageSource("intro_ball")
 
 pygame.display.set_icon(getImageSource("player").ImageLoad)
@@ -161,6 +164,12 @@ def render():
             tmp_imgrect = getImageSourceRect(i.EntityImageSource)
             screen.blit(tmp_img,((tmp_rect.centerx-tmp_imgrect.width/2)*DISPLAY_SCALE,(tmp_rect.centery-tmp_imgrect.height/2)*DISPLAY_SCALE,0,0))
 
+    #always render mouse above all entities
+    tmp_img = pygame.transform.scale_by(getImageSource("mouse").ImageLoad,DISPLAY_SCALE)
+    tmp_imgrect = getImageSourceRect("mouse")
+    tmp_pos = pygame.mouse.get_pos()
+    screen.blit(tmp_img,((tmp_pos[0]-tmp_imgrect.width/2*DISPLAY_SCALE),(tmp_pos[1]-tmp_imgrect.height/2*DISPLAY_SCALE),0,0))
+
     pygame.display.flip()
 
 
@@ -188,6 +197,7 @@ InputList = []
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
+
 
         InputList.append(event)
 

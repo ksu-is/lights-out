@@ -8,6 +8,9 @@ GAME DOCUMENTATION
 
 IMMEDIATE TO-DO
 
+
+-allow for resizing of the game window (either through Windows usual fullscreen button, or through a custom header)
+
 -add game state (paused or not)
 -add update functionality to Entity, as well as the variable to control whether updates run or not
 -add other functionality to Entity (Solid, Active, etc. These will have default values in Entity, but almost all child Entity types will overwrite with their own default values)
