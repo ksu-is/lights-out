@@ -118,14 +118,20 @@ def createEntity(entity_type=-1,entity_name="", entity_rect=(0,0,0,0), entity_im
     entity.EntityRect = pygame.Rect(entity_rect)
     EntityList.append(entity)
 
-    entity.onCreated(EntityList,Game)
+    try:
+        entity.onCreated(EntityList,Game)
+    except:
+        error.causeError("Creating Entity Error: "+entity.EntityName,"There was a problem in the onCreated function of this entity")
 
 def destroyEntity(entity_id):
     for i in EntityList:
         if (i.EntityID == entity_id or i.EntityName == entity_id or i.EntityType == entity_id):
             print("destroyed "+i.EntityName)
             EntityList.remove(i)
-            i.onDestroyed(EntityList,Game)
+            try:
+                i.onDestroyed(EntityList,Game)
+            except:
+                error.causeError("Destroying Entity Error: "+i.EntityName,"There was a problem in the onDestroyed function of this entity") 
 
 def getEntityByID(entity_id):
     for i in EntityList:
@@ -177,9 +183,13 @@ def update_all_entities(input_list):
 
 #region Main loop
 
+InputList = []
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
+
+        InputList.append(event)
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_a:
@@ -187,6 +197,8 @@ while True:
                 destroyEntity("Player")
 
     update_all_entities(pygame.event.get())
+
+    InputList = []
 
     render()
 

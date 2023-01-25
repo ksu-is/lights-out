@@ -57,6 +57,8 @@ class Entity:
         EntityList are checked to see if their own update
         function should run. If yes, then run the function.
         '''
-
+        
+        for event in self.Inputs:
+            pass
         pass
 
