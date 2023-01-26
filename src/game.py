@@ -66,7 +66,7 @@ class ImageSource:
 
 def addImageSource(source_string):
     '''
-    Function used to add new image sources, or any new image files used. This should be used in the main file only.
+    Function used to add new image sources, or any new image files required. This should be used in the main file only.
     '''
 
     try:
