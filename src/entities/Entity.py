@@ -11,6 +11,7 @@ import error
 
 class Entity:
     def __init__(self):
+        try:
             self.EntityID = 0
             self.EntityType = -1
             self.EntityName = ""
@@ -26,6 +27,8 @@ class Entity:
             self.RequiresInputs = True #eventually replace this with false, Player and UI elements will likely be the only entities which need inputs
 
             self.Inputs = []
+        except:
+            error.causeError("Entity Initializing Error","There was an error in the __init__ function for an entity. This means it happened BEFORE finishing either the createEntity or onCreated functions")
 
     def onCreated(self,entity_list,game):
         '''

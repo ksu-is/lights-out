@@ -32,7 +32,7 @@ DISPLAY_SIZE = DISPLAY_WIDTH, DISPLAY_HEIGHT = 960, 720
 DISPLAY_SCALE = DISPLAY_WIDTH / SCREEN_WIDTH
 
 DISPLAY_BLACK = 0, 0, 0
-DISPLAY_GREY = 50, 50, 50
+DISPLAY_GREY = 30, 30, 30
 
 window = pygame.display.set_mode(DISPLAY_SIZE, pygame.RESIZABLE)
 
@@ -65,10 +65,19 @@ class ImageSource:
     ImageLoad = 0
 
 def addImageSource(source_string):
-    img = ImageSource()
-    img.ImageID = source_string
-    img.ImageLoad = pygame.image.load("assets/"+source_string+".gif")
-    ImageSourceList.append(img)
+    '''
+    Function used to add new image sources, or any new image files used. This should be used in the main file only.
+    '''
+
+    try:
+
+        img = ImageSource()
+        img.ImageID = source_string
+        img.ImageLoad = pygame.image.load("assets/"+source_string+".gif")
+        ImageSourceList.append(img)
+
+    except:
+        error.causeError("Loading Image Error: "+source_string,"There was a problem loading an image source file. Check to make sure that all image files are present, with usable file extensions")
 
 def getImageSource(source_string):
     for i in ImageSourceList:
@@ -120,14 +129,20 @@ def generateEntityID():
 EntityList = []
 
 def createEntity(entity_type=-1,entity_name="", entity_rect=(0,0,0,0), entity_image_src=""):
-    entity = getNewEntity(entity_type)
+    
+    try:
 
-    entity.EntityID = generateEntityID()
+        entity = getNewEntity(entity_type)
 
-    entity.EntityName = entity_name
-    entity.EntityImageSource = entity_image_src
-    entity.EntityRect = pygame.Rect(entity_rect)
-    EntityList.append(entity)
+        entity.EntityID = generateEntityID()
+
+        entity.EntityName = entity_name
+        entity.EntityImageSource = entity_image_src
+        entity.EntityRect = pygame.Rect(entity_rect)
+        EntityList.append(entity)
+
+    except:
+        error.causeError("Creating Entity Error: "+entity.EntityName,"There was a problem in the createEntity function, before getting to the onCreated function")
 
     try:
         entity.onCreated(EntityList,Game)
