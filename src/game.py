@@ -9,6 +9,8 @@ Main game file. Includes setup, game variables, and the main loop
 import sys, pygame
 pygame.init()
 
+import util
+
 from common import states
 from common import EntityTypeList
 
@@ -22,13 +24,19 @@ from entities.Entity import Entity
 
 SCREEN_SIZE = SCREEN_WIDTH, SCREEN_HEIGHT = 160, 120
 
+SCREEN_X = 0
+SCREEN_Y = 0
+
 DISPLAY_SIZE = DISPLAY_WIDTH, DISPLAY_HEIGHT = 960, 720
 
 DISPLAY_SCALE = DISPLAY_WIDTH / SCREEN_WIDTH
 
 DISPLAY_BLACK = 0, 0, 0
+DISPLAY_GREY = 50, 50, 50
 
-screen = pygame.display.set_mode(DISPLAY_SIZE, pygame.RESIZABLE)
+window = pygame.display.set_mode(DISPLAY_SIZE, pygame.RESIZABLE)
+
+screen = window.subsurface(0,0,window.get_width(),window.get_height())
 
 pygame.display.set_caption("")
 
@@ -155,6 +163,8 @@ createEntity(EntityTypeList.Player,"Player",(16,16,8,8),"player")
 #region Render
 
 def render():
+
+    window.fill(DISPLAY_GREY)
     screen.fill(DISPLAY_BLACK)
 
     for i in EntityList:
@@ -168,7 +178,11 @@ def render():
     tmp_img = pygame.transform.scale_by(getImageSource("mouse").ImageLoad,DISPLAY_SCALE)
     tmp_imgrect = getImageSourceRect("mouse")
     tmp_pos = pygame.mouse.get_pos()
-    screen.blit(tmp_img,((tmp_pos[0]-tmp_imgrect.width/2*DISPLAY_SCALE),(tmp_pos[1]-tmp_imgrect.height/2*DISPLAY_SCALE),0,0))
+    tmp_mx = (tmp_pos[0])-SCREEN_X
+    tmp_my = (tmp_pos[1])-SCREEN_Y
+    tmp_mx = util.clamp(tmp_mx,0,screen.get_width())
+    tmp_my = util.clamp(tmp_my,0,screen.get_height())
+    screen.blit(tmp_img,(tmp_mx-tmp_imgrect.width/2*DISPLAY_SCALE,tmp_my-tmp_imgrect.height/2*DISPLAY_SCALE,0,0))
 
     pygame.display.flip()
 
@@ -198,6 +212,28 @@ while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
 
+        if event.type == pygame.WINDOWRESIZED:
+            flag = True
+            tmp_width = 1.6
+            tmp_height = 1.2
+            while flag:
+                if (flag and tmp_width < pygame.display.get_window_size()[0]-1.6): tmp_width += 1.6
+                else: flag = False
+                if (flag and tmp_height <pygame.display.get_window_size()[1]-1.2): tmp_height += 1.2
+                else: flag = False
+
+            tmp_x = (pygame.display.get_window_size()[0]-tmp_width)/2
+            tmp_y = (pygame.display.get_window_size()[1]-tmp_height)/2
+
+            screen = window.subsurface((tmp_x,tmp_y,tmp_width,tmp_height))
+
+            DISPLAY_SCALE = tmp_width / SCREEN_WIDTH
+
+            SCREEN_X = tmp_x
+            SCREEN_Y = tmp_y
+
+            #pygame.transform.scale(screen,pygame.display.get_window_size())
+            print("x: "+str(tmp_x)+", y: "+str(tmp_y))
 
         InputList.append(event)
 

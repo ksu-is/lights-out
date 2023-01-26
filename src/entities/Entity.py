@@ -5,6 +5,7 @@ The base entity class.
 '''
 
 import pygame
+import util
 from common import states
 import error
 
