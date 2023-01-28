@@ -12,11 +12,13 @@ pygame.init()
 import util
 
 from common import states
-from common import EntityTypeList
+from entities.EntityList import EntityTypeList
 
 import error
 
 from entities.Entity import Entity
+
+from entities.EntityHandler import EntityHandler
 
 #endregion
 
@@ -105,63 +107,10 @@ pygame.display.set_icon(getImageSource("player").ImageLoad)
 
 #region Handle entities (add entities here)
 
-def getNewEntity(entity_type):
-    match entity_type:
 
-        case EntityTypeList.Player:
-            return Entity()
-
-        case EntityTypeList.Wall:
-            return Entity()
-
-        case _:
-            return Entity()
 
 #region Handle entity helpers
 
-EntityIDGenerator = 1000
-
-def generateEntityID():
-    global EntityIDGenerator
-    EntityIDGenerator += 1
-    return EntityIDGenerator
-
-EntityList = []
-
-def createEntity(entity_type=-1,entity_name="", entity_rect=(0,0,0,0), entity_image_src=""):
-    
-    try:
-
-        entity = getNewEntity(entity_type)
-
-        entity.EntityID = generateEntityID()
-
-        entity.EntityName = entity_name
-        entity.EntityImageSource = entity_image_src
-        entity.EntityRect = pygame.Rect(entity_rect)
-        EntityList.append(entity)
-
-    except:
-        error.causeError("Creating Entity Error: "+entity.EntityName,"There was a problem in the createEntity function, before getting to the onCreated function")
-
-    try:
-        entity.onCreated(EntityList,Game)
-    except:
-        error.causeError("Creating Entity Error: "+entity.EntityName,"There was a problem in the onCreated function of this entity")
-
-def destroyEntity(entity_id):
-    for i in EntityList:
-        if (i.EntityID == entity_id or i.EntityName == entity_id or i.EntityType == entity_id):
-            print("destroyed "+i.EntityName)
-            EntityList.remove(i)
-            try:
-                i.onDestroyed(EntityList,Game)
-            except:
-                error.causeError("Destroying Entity Error: "+i.EntityName,"There was a problem in the onDestroyed function of this entity") 
-
-def getEntityByID(entity_id):
-    for i in EntityList:
-        if (i.EntityID == entity_id): return EntityList.i
 
 #endregion
 
@@ -170,7 +119,7 @@ def getEntityByID(entity_id):
 
 
 
-createEntity(EntityTypeList.Player,"Player",(16,16,8,8),"player")
+EntityHandler.createEntity(Game,EntityTypeList.Player,"Player",(16,16,8,8),"player")
 
 
 
@@ -184,7 +133,7 @@ def render():
         window.fill(DISPLAY_GREY)
         screen.fill(DISPLAY_BLACK)
 
-        for i in EntityList:
+        for i in EntityHandler.EntityList:
             if (i.EntityVisible == True and i.EntityImageSource != ""):
                 tmp_rect = i.EntityRect
                 tmp_img = pygame.transform.scale_by(getImageSource(i.EntityImageSource).ImageLoad,DISPLAY_SCALE)
@@ -211,16 +160,7 @@ def render():
 
 #region Logic
 
-def update_all_entities(input_list):
-    for i in EntityList:
-        if ((not i.RestrictUpdate) and Game.GameState in i.UpdateStates):
-            if (i.RequiresInputs):
-                i.Inputs = input_list
-            try:
-                i.onUpdate(EntityList,Game)
-            except:
-                error.causeError("Updating Entity Error: "+i.EntityName,"There was a problem in the onUpdate function of this entity") 
-            i.Inputs = []        
+      
 
 #endregion
 
@@ -230,7 +170,7 @@ InputList = []
 
 while True:
     for event in pygame.event.get():
-        if event.type == pygame.QUIT: sys.exit()
+        if event.type == pygame.QUIT: error.exitSafely()
 
         if event.type == pygame.WINDOWRESIZED:
             try:
@@ -260,10 +200,9 @@ while True:
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_a:
-                print("hello")
-                destroyEntity("Player")
+                EntityHandler.destroyEntity(Game,"Player")
 
-    update_all_entities(pygame.event.get())
+    EntityHandler.update_all_entities(Game,pygame.event.get())
 
     InputList = []
 
