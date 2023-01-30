@@ -63,8 +63,18 @@ ImageSourceList = []
 #region Load image helpers
 
 class ImageSource:
+    '''
+    Class used for image sources.
+
+    NOTE: These sources are not defined in entities. These are the actual image files, given
+    an ID (given string as a name) for easy access, and the actual surfaces which will be
+    used for rendering.
+    '''
     ImageID = ""
     ImageLoad = 0
+    '''
+    The actual surface, loaded from the image file, and used for rendering purposes
+    '''
 
 def addImageSource(source_string):
     '''
