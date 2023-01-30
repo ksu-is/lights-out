@@ -10,6 +10,11 @@ from common import states
 import error
 
 class Entity:
+    '''
+    The highest level Entity class. All entities will be either instances of this class or (more likely) instances
+    of its children classes. Contains basic entity functionality, including basic rendering, updating, creating,
+    and destroying
+    '''
     def __init__(self):
         try:
             self.EntityID = 0
