@@ -35,7 +35,7 @@ class Entity:
         except:
             error.causeError("Entity Initializing Error","There was an error in the __init__ function for an entity. This means it happened BEFORE finishing either the createEntity or onCreated functions")
 
-    def onCreated(self,entity_list,game):
+    def onCreated(self,entity_handler,game):
         '''
         An entity's creation function.
         This function will only be run once, when the entity is created,
@@ -46,7 +46,7 @@ class Entity:
         '''
         pass
 
-    def onDestroyed(self,entity_list,game):
+    def onDestroyed(self,entity_handler,game):
         '''
         An entity's destruction function.
         This function will only be run once, when the entity is destroyed,
@@ -59,7 +59,7 @@ class Entity:
         '''
         pass
 
-    def onUpdate(self,entity_list,game):
+    def onUpdate(self,entity_handler,game):
         '''
         An entity's update function.
         Every time the main loop is run, all entities in the
@@ -68,6 +68,8 @@ class Entity:
         '''
         
         for event in self.Inputs:
-            pass
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_a:
+                    entity_handler.destroyEntity(game,"Player")
         pass
 

@@ -8,13 +8,13 @@ GAME DOCUMENTATION
 
 IMMEDIATE TO-DO
 
-
+-refactor render if possible, clean up game.py further
+-add more descriptions to EntityHandler.py's functions, specifically
+-add sound handler, as well as easy integration with entities
+-add the option for entities to be text-based instead of using images
 -clean up current codebase, and try to make things more elegant than they currently are
 -bring everything into line with the PEP 8 guidelines. remember: this is meant to improve my python
 
--add game state (paused or not)
--add update functionality to Entity, as well as the variable to control whether updates run or not
--add other functionality to Entity (Solid, Active, etc. These will have default values in Entity, but almost all child Entity types will overwrite with their own default values)
 -clean up game.py (move functions to outside files when possible)
 -begin creating subclasses of Entity (starting with EntityUI and EntityGameplay)
 

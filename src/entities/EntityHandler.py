@@ -42,7 +42,7 @@ class EntityHandler:
             error.causeError("Creating Entity Error: "+entity.EntityName,"There was a problem in the createEntity function, before getting to the onCreated function")
 
         try:
-            entity.onCreated(self.EntityList,game)
+            entity.onCreated(self,game)
         except:
             error.causeError("Creating Entity Error: "+entity.EntityName,"There was a problem in the onCreated function of this entity")
 
@@ -56,7 +56,7 @@ class EntityHandler:
                 error.addToActionLog("Destroyed Entity: "+i.EntityName)
 
                 try:
-                    i.onDestroyed(self.EntityList,game)
+                    i.onDestroyed(self,game)
                 except:
                     error.causeError("Destroying Entity Error: "+i.EntityName,"There was a problem in the onDestroyed function of this entity") 
 
@@ -73,7 +73,7 @@ class EntityHandler:
                 if (i.RequiresInputs):
                     i.Inputs = input_list
                 try:
-                    i.onUpdate(self.EntityList,game)
+                    i.onUpdate(self,game)
                 except:
                     error.causeError("Updating Entity Error: "+i.EntityName,"There was a problem in the onUpdate function of this entity") 
                 i.Inputs = []    
