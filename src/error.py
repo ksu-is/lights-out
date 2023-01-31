@@ -67,9 +67,17 @@ def exitSafely(error_string=""):
     exit()
 
 def addToActionLog(action_string):
+    '''
+    Adds a string to the action log, which prints out when the application closes. If you want to know if something is happening,
+    you can add it to the log, and see if it happens, how often it happens, and when it happens- between other actions being logged.
+    '''
     ActionLog.append(action_string)
 
 
 def clearActionLog():
+    '''
+    Clears the action log. Not recommended to take place regularly, unless there are a few specific 'actions' you want to look for,
+    and you know roughly when they will occur. 
+    '''
     ActionLog = []
 
