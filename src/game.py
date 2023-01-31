@@ -38,6 +38,9 @@ DISPLAY_SCALE = DISPLAY_WIDTH / SCREEN_WIDTH
 DISPLAY_BLACK = 0, 0, 0
 DISPLAY_GREY = 30, 30, 30
 
+WINDOW_COLOR = DISPLAY_GREY
+SCREEN_COLOR = DISPLAY_BLACK
+
 window = pygame.display.set_mode(DISPLAY_SIZE, pygame.RESIZABLE)
 
 screen = window.subsurface(0,0,window.get_width(),window.get_height())
@@ -87,25 +90,18 @@ def render_all():
 
     try:
 
-        window.fill(DISPLAY_GREY)
-        screen.fill(DISPLAY_BLACK)
+        window.fill(WINDOW_COLOR)
+        screen.fill(SCREEN_COLOR)
 
         render.renderEntities(EntityHandler,screen,DISPLAY_SCALE)
 
         #always render mouse above all entities
-        tmp_img = pygame.transform.scale_by(render.getImageSource("mouse").ImageLoad,DISPLAY_SCALE)
-        tmp_imgrect = render.getImageSourceRect("mouse")
-        tmp_pos = pygame.mouse.get_pos()
-        tmp_mx = (tmp_pos[0])-SCREEN_X
-        tmp_my = (tmp_pos[1])-SCREEN_Y
-        tmp_mx = util.clamp(tmp_mx,0,screen.get_width())
-        tmp_my = util.clamp(tmp_my,0,screen.get_height())
-        screen.blit(tmp_img,(tmp_mx-tmp_imgrect.width/2*DISPLAY_SCALE,tmp_my-tmp_imgrect.height/2*DISPLAY_SCALE,0,0))
+        render.renderMouse("mouse",screen,DISPLAY_SCALE,SCREEN_X,SCREEN_Y)
 
         pygame.display.flip()
 
     except:
-        error.causeError("Rendering Error","There was an error in the render() function")
+        error.causeError("Rendering Error","There was an error in the render_all() function")
 
 
 def resize_screen():
