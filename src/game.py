@@ -1,12 +1,13 @@
-'''
+"""
 
 Main game file. Includes setup, game variables, and the main loop
 
-'''
+"""
 
 #region Imports
 
-import sys, pygame
+import sys 
+import pygame
 pygame.init()
 
 import util
@@ -57,11 +58,11 @@ class MainGame:
     GameState = states.NORMAL
 
 Game = MainGame()
-'''
+"""
 The 'game'. Functionally, this does not do much, nor is it some all-encompassing class containing many different files or functions.
 This is primarily a carrier for game-wide information, which may be used in many different locations/situations. The easiest example
 is the actual game state (if the game is in its normal state, or if it is paused, etc.).
-'''
+"""
 
 #endregion
 
@@ -105,12 +106,12 @@ def render_all():
 
 
 def resize_screen():
-    '''
+    """
     Resize the screen, based on the new size of the actual window.
 
     NOTE: This is ONLY to be used in the logic portion of the main loop, ONLY when checking the event list, ONLY when the event
     includes a pygame WINDOWRESIZED event
-    '''
+    """
     global screen
     global DISPLAY_SCALE
     global SCREEN_WIDTH
