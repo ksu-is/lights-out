@@ -20,6 +20,8 @@ from entities.Entity import Entity
 
 from entities.EntityHandler import EntityHandler
 
+import render
+
 #endregion
 
 #region Setup constants and display
@@ -63,60 +65,11 @@ is the actual game state (if the game is in its normal state, or if it is paused
 
 #region Handle images (add images here)
 
-ImageSourceList = []
+render.addImageSource("player")
+render.addImageSource("mouse")
+render.addImageSource("intro_ball")
 
-#region Load image helpers
-
-class ImageSource:
-    '''
-    Class used for image sources.
-
-    NOTE: These sources are not defined in entities. These are the actual image files, given
-    an ID (given string as a name) for easy access, and the actual surfaces which will be
-    used for rendering.
-    '''
-    ImageID = ""
-    ImageLoad = 0
-    '''
-    The actual surface, loaded from the image file, and used for rendering purposes
-    '''
-
-def addImageSource(source_string):
-    '''
-    Function used to add new image sources, or any new image files required. This should be used in the main file only.
-    '''
-
-    try:
-
-        img = ImageSource()
-        img.ImageID = source_string
-        img.ImageLoad = pygame.image.load("assets/"+source_string+".gif")
-        ImageSourceList.append(img)
-
-    except:
-        error.causeError("Loading Image Error: "+source_string,"There was a problem loading an image source file. Check to make sure that all image files are present, with usable file extensions")
-
-def getImageSource(source_string):
-    for i in ImageSourceList:
-        if (i.ImageID == source_string): return i
-
-    return ""
-
-def getImageSourceRect(source_string):
-    for i in ImageSourceList:
-        if (i.ImageID == source_string): return i.ImageLoad.get_rect()
-
-    return -1
-
-
-
-#endregion
-
-addImageSource("player")
-addImageSource("mouse")
-addImageSource("intro_ball")
-
-pygame.display.set_icon(getImageSource("player").ImageLoad)
+pygame.display.set_icon(render.getImageSource("player").ImageLoad)
 
 #endregion
 
@@ -130,23 +83,18 @@ EntityHandler.createEntity(Game,EntityTypeList.Player,"Player",(16,16,8,8),"play
 
 #region Render
 
-def render():
+def render_all():
 
     try:
 
         window.fill(DISPLAY_GREY)
         screen.fill(DISPLAY_BLACK)
 
-        for i in EntityHandler.EntityList:
-            if (i.EntityVisible == True and i.EntityImageSource != ""):
-                tmp_rect = i.EntityRect
-                tmp_img = pygame.transform.scale_by(getImageSource(i.EntityImageSource).ImageLoad,DISPLAY_SCALE)
-                tmp_imgrect = getImageSourceRect(i.EntityImageSource)
-                screen.blit(tmp_img,((tmp_rect.centerx-tmp_imgrect.width/2)*DISPLAY_SCALE,(tmp_rect.centery-tmp_imgrect.height/2)*DISPLAY_SCALE,0,0))
+        render.renderEntities(EntityHandler,screen,DISPLAY_SCALE)
 
         #always render mouse above all entities
-        tmp_img = pygame.transform.scale_by(getImageSource("mouse").ImageLoad,DISPLAY_SCALE)
-        tmp_imgrect = getImageSourceRect("mouse")
+        tmp_img = pygame.transform.scale_by(render.getImageSource("mouse").ImageLoad,DISPLAY_SCALE)
+        tmp_imgrect = render.getImageSourceRect("mouse")
         tmp_pos = pygame.mouse.get_pos()
         tmp_mx = (tmp_pos[0])-SCREEN_X
         tmp_my = (tmp_pos[1])-SCREEN_Y
@@ -201,7 +149,7 @@ def resize_screen():
 
 InputList = []
 
-def logic():
+def logic_all():
 
     global InputList
     global Game
@@ -224,8 +172,8 @@ def logic():
 
 while True:
 
-    logic()
+    logic_all()
 
-    render()
+    render_all()
 
 #endregion
