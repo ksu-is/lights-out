@@ -97,7 +97,7 @@ error.addToActionLog("Loading assets: All sounds loaded")
 #endregion
 
 
-EntityHandler.createEntity(Game,EntityTypeList.Player,"Player",(16,16,8,8),"player")
+EntityHandler.createEntity(Game,EntityTypeList.Player,(16,16,8,8),"Player","player")
 
 sound.playSound("main_menu",-1)
 

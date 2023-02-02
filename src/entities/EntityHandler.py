@@ -36,7 +36,7 @@ class EntityHandler:
 
 
 
-    def createEntity(self,game,entity_type=-1,entity_name="", entity_rect=(0,0,0,0), entity_image_src=""):
+    def createEntity(self,game,entity_type=-1,entity_rect=(0,0,0,0),entity_name="", entity_image_src="",entity_depth=-1):
         """
         Creates an entity with a given type, and has the option to set other default values.
         However, in most cases, the entity type and the entity rect should be the only arguments
@@ -56,9 +56,11 @@ class EntityHandler:
 
             entity.EntityID = self.generateEntityID()
 
-            entity.EntityName = entity_name
-            entity.EntityImageSource = entity_image_src
+            if (not entity_name == ""): entity.EntityName = entity_name
+            if (not entity_image_src == ""): entity.EntityImageSource = entity_image_src
             entity.EntityRect = pygame.Rect(entity_rect)
+
+            if (not entity_depth == -1): entity.EntityDepth = entity_depth
 
             self.EntityList.append(entity)
             error.addToActionLog("Created Entity: "+entity.EntityName)

@@ -79,5 +79,6 @@ def clearActionLog():
     Clears the action log. Not recommended to take place regularly, unless there are a few specific 'actions' you want to look for,
     and you know roughly when they will occur. 
     """
+    global ActionLog
     ActionLog = []
 

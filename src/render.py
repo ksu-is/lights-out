@@ -67,11 +67,17 @@ def getImageSourceRect(source_string):
     return -1
 
 
+def sortEntitiesByDepth(entity):
+    return entity.EntityDepth
+
 def renderEntities(entity_handler,screen,display_scale):
     """
     Render all entities in the EntityList. Should only be called in the render portion
     of the main application loop, and should only be called once.
     """
+
+    entity_handler.EntityList.sort(key=sortEntitiesByDepth,reverse=True)
+
     for i in entity_handler.EntityList:
         if (i.EntityVisible == True and i.EntityImageSource != ""):
             tmp_rect = i.EntityRect

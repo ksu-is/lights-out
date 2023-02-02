@@ -27,6 +27,8 @@ class Entity:
 
             self.EntityVisible = True
 
+            self.EntityDepth = 1000
+
             self.RestrictUpdate = False
             self.UpdateStates = [states.NORMAL]
 
