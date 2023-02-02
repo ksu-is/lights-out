@@ -49,6 +49,8 @@ def exitSafely(error_string=""):
     while also giving the opportunity to print out the action log.
     """
 
+    addToActionLog("Closing application")
+
     log_string = """\n==========================================================================================\n==========================================================================================\n==========================================================================================\n\n
     Action Log: These are the events logged by the application, before close.\n
     """

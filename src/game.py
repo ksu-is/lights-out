@@ -48,6 +48,8 @@ DISPLAY_GREY = 30, 30, 30
 WINDOW_COLOR = DISPLAY_GREY
 SCREEN_COLOR = DISPLAY_BLACK
 
+SCREEN_MAX_FPS = 144
+
 window = pygame.display.set_mode(DISPLAY_SIZE, pygame.RESIZABLE)
 
 screen = window.subsurface(0,0,window.get_width(),window.get_height())
@@ -188,10 +190,17 @@ def logic_all():
 
 error.addToActionLog("Running application: Beginning main loop")
 
+ApplicationClock = pygame.time.Clock()
+
 while True:
 
     logic_all()
 
     render_all()
+
+    ApplicationClock.tick(SCREEN_MAX_FPS)
+
+    pygame.display.set_caption("FPS: "+str(round(ApplicationClock.get_fps(),2)))
+
 
 #endregion
