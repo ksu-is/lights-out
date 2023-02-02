@@ -35,7 +35,7 @@ def addImageSource(source_string):
 
         img = ImageSource()
         img.ImageID = source_string
-        img.ImageLoad = pygame.image.load("assets/"+source_string+".gif")
+        img.ImageLoad = pygame.image.load("assets/images/"+source_string+".gif")
         ImageSourceList.append(img)
 
     except:

@@ -23,6 +23,8 @@ from entities.EntityHandler import EntityHandler
 
 import render
 
+import sound
+
 #endregion
 
 #region Setup constants and display

@@ -9,6 +9,7 @@ GAME DOCUMENTATION
 IMMEDIATE TO-DO
 
 -add sound handler, as well as easy integration with entities
+-add image depth for rendering
 -add the option for entities to be text-based instead of using images
 -clean up current codebase, and try to make things more elegant than they currently are
 -bring everything into line with the PEP 8 guidelines. remember: this is meant to improve my python
