@@ -8,6 +8,7 @@ import pygame
 import util
 from common import states
 import error
+import sound
 
 class Entity:
     """
@@ -71,5 +72,6 @@ class Entity:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_a:
                     entity_handler.destroyEntity(game,"Player")
+                    sound.stopSound("main_menu")
         pass
 

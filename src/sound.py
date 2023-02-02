@@ -32,7 +32,8 @@ def initChannelList():
     j = pygame.mixer.get_num_channels()
     for i in range(j):
         ChannelList.append(ChannelHandler(i))
-        error.addToActionLog("Added Sound Channel "+str(i))
+
+    error.addToActionLog("Added Sound Channels 1-"+str(j))
 
 initChannelList()
 
@@ -131,7 +132,7 @@ def playSound(sound_name="",number_of_loops=0,entityID=0,force_play=False):
     except:
         error.causeError("Playing Sound Error: "+sound_name,"There was a problem playing a sound. Either the source for the sound is broken or not present, or there may be an issue with the handlers in sound.py")
 
-def stopSound(sound_name,remove_all,entity_id=""):
+def stopSound(sound_name,remove_all=False,entity_id=""):
     try:
         for j in ChannelList:
             if (j.SoundID == sound_name and (entity_id == "" or j.entityOwner == entity_id)):
@@ -147,4 +148,4 @@ def stopAllEntitySounds(entity_id):
             if (j.ownerID == entity_id):
                 j.channel.stop()
     except:
-        error.causeError("Stopping All of an Entity's Sounds Error: "+entity_id,"There was a problem stopping a sound. Perhaps the given sound to stop does not exist, or there may be a different problem, either in the file which called this function, or in sound.py")
+        error.causeError("Stopping All of an Entity's Sounds Error: "+entity_id,"There was a problem stopping all of an entity's sounds. There may be a problem with the entity, or there may be a different problem, either in the file which called this function, or in sound.py")
