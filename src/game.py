@@ -10,12 +10,14 @@ import sys
 import pygame
 pygame.init()
 
+import error
+
+error.addToActionLog("Setup application")
+
 import util
 
 from common import states
 from entities.EntityList import EntityTypeList
-
-import error
 
 from entities.Entity import Entity
 
@@ -26,6 +28,8 @@ import render
 import sound
 
 #endregion
+
+
 
 #region Setup constants and display
 
@@ -66,6 +70,8 @@ This is primarily a carrier for game-wide information, which may be used in many
 is the actual game state (if the game is in its normal state, or if it is paused, etc.).
 """
 
+error.addToActionLog("Application setup complete: Begin loading assets")
+
 #endregion
 
 
@@ -75,16 +81,25 @@ render.addImageSource("player")
 render.addImageSource("mouse")
 render.addImageSource("intro_ball")
 
+error.addToActionLog("Loading assets: All images loaded")
+
 pygame.display.set_icon(render.getImageSource("player").ImageLoad)
 
 #endregion
 
 
+#region Handle sounds (add sounds here)
+
+sound.addSoundSource("main_menu","ambientmain_0")
+
+error.addToActionLog("Loading assets: All sounds loaded")
+
+#endregion
 
 
 EntityHandler.createEntity(Game,EntityTypeList.Player,"Player",(16,16,8,8),"player")
 
-
+sound.playSound("main_menu",-1)
 
 
 #region Render
@@ -144,6 +159,7 @@ def resize_screen():
 
 #endregion
 
+
 #region Logic
 
 InputList = []
@@ -167,7 +183,10 @@ def logic_all():
 
 #endregion
 
+
 #region Main loop
+
+error.addToActionLog("Running application: Beginning main loop")
 
 while True:
 

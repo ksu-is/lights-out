@@ -15,6 +15,28 @@ pygame.mixer.init()
 
 SoundSourceList = []
 
+ChannelList = []
+
+class ChannelHandler:
+    """
+    
+    """
+    def __init__(self,channel_id):
+        
+        self.channel = pygame.mixer.Channel(channel_id)
+        self.soundID = ""
+        self.entityOwner = 0
+        self.force = False
+
+def initChannelList():
+    j = pygame.mixer.get_num_channels()
+    for i in range(j):
+        ChannelList.append(ChannelHandler(i))
+        error.addToActionLog("Added Sound Channel "+str(i))
+
+initChannelList()
+
+
 class SoundSource:
     """
     Class used for sound sources.
@@ -28,7 +50,7 @@ class SoundSource:
     The actual sound, loaded from the sound file, and used for mixing purposes
     """
 
-def addSoundSource(source_string):
+def addSoundSource(name_string,source_string=""):
     """
     Function used to add new sound sources, or any new sound files required.
     This should be used in the main file only, as imported from render.py\n
@@ -38,9 +60,11 @@ def addSoundSource(source_string):
     try:
 
         snd = SoundSource()
-        snd.SoundID = source_string
+        snd.SoundID = name_string
+        if (source_string == ""): source_string = name_string
+
         try:
-            snd.SoundLoad = pygame.mixer.Sound("assets/"+source_string+".ogg")
+            snd.SoundLoad = pygame.mixer.Sound("assets/sounds/"+source_string+".ogg")
         except:
             snd.SoundLoad = pygame.mixer.Sound("assets/sounds/"+source_string+".wav")
         SoundSourceList.append(snd)
@@ -62,12 +86,65 @@ def getSoundSource(source_string):
 
     return ""
 
-def playSound(sound_name="",number_of_loops=0):
+def playSound(sound_name="",number_of_loops=0,entityID=0,force_play=False):
     """
-    Will play the sound with the given name, looping with the given number of loops.
-    NOTE: Use -1 as the number of loops if the sound should loop indefinitely.
+    Will play the sound with the given name, looping with the given number of loops.\n
+    NOTE: Use -1 as the number of loops if the sound should loop indefinitely.\n
+    IMPORTANT: Anytime an entity is playing a sound (which will likely be most of the time),
+    there should always be an entity ID passed as an argument. This allows for stopping
+    sounds based on which entity started them.\n
+    NOTE: The last argument is whether or not to force the sound to play. If this is
+    given as True, then if all audio channels are busy, it will force itself into
+    a channel that's already playing a sound. Also, if this is given as True, once
+    this sound is playing in a channel, it cannot be overridden, even by another
+    sound with force_play given as True.
     """
     try:
-        getSoundSource(sound_name).SoundLoad.play(number_of_loops)
+
+        flag = False
+
+        for j in ChannelList:
+            if (not j.channel.get_busy()):
+
+                j.SoundID = sound_name
+                j.entityOwner = entityID
+                j.force = force_play
+
+                j.channel.play(getSoundSource(sound_name).SoundLoad,number_of_loops)
+
+                flag = True
+
+                break
+
+        if (not flag):
+            for i in ChannelList:
+                if (not j.channel.get_busy() or (force_play and (not j.force))):
+                    
+                    j.SoundID = sound_name
+                    j.entityOwner = entityID
+                    j.force = force_play
+
+                    j.channel.play(getSoundSource(sound_name).SoundLoad,number_of_loops)
+
+                    break
+
     except:
         error.causeError("Playing Sound Error: "+sound_name,"There was a problem playing a sound. Either the source for the sound is broken or not present, or there may be an issue with the handlers in sound.py")
+
+def stopSound(sound_name,remove_all,entity_id=""):
+    try:
+        for j in ChannelList:
+            if (j.SoundID == sound_name and (entity_id == "" or j.entityOwner == entity_id)):
+                j.channel.stop()
+
+                if (not remove_all): break
+    except:
+        error.causeError("Stopping Sound Error: "+sound_name,"There was a problem stopping a sound. Perhaps the given sound to stop does not exist, or there may be a different problem, either in the file which called this function, or in sound.py")
+
+def stopAllEntitySounds(entity_id):
+    try:
+        for j in ChannelList:
+            if (j.ownerID == entity_id):
+                j.channel.stop()
+    except:
+        error.causeError("Stopping All of an Entity's Sounds Error: "+entity_id,"There was a problem stopping a sound. Perhaps the given sound to stop does not exist, or there may be a different problem, either in the file which called this function, or in sound.py")
