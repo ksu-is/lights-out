@@ -110,6 +110,16 @@ class EntityHandler:
             if (i.EntityID == entity_id): return self.EntityList.i
 
 
+    def getEntityByType(self,entity_type):
+        """
+        Gets all entities from the EntityList which match the given entity type.
+        NOTE: This is based on the actual entity class, and NOT the EntityType as seen in EntityList.py.
+        """
+        tmpArray = []
+        for i in self.EntityList:
+            if (i.isinstance(entity_type)): tmpArray.append(i)
+        return tmpArray
+
     def update_all_entities(self,game,input_list):
         """
         The basis of the logic side of the main application loop. This function

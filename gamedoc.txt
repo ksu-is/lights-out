@@ -8,6 +8,9 @@ GAME DOCUMENTATION
 
 IMMEDIATE TO-DO
 
+-review the way that entity types are handled. there is almost certainly a better way to handle it than the currently
+implemented method, probably making use of instanceof and possibly more general instantiation.
+
 -add functions to allow for easier animation of entities, with different speeds
 -add the option for entities to be text-based instead of using images
 -clean up current codebase, and try to make things more elegant than they currently are
