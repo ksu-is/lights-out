@@ -8,7 +8,6 @@ ENGINE DOCUMENTATION
 
 IMMEDIATE TO-DO
 
--refactor 'game' into 'app' to make framework purpose clearer
 -review the way that entity types are handled. there is almost certainly a better way to handle it than the currently
 implemented method, probably making use of instanceof and possibly more general instantiation.
 
