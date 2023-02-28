@@ -67,9 +67,9 @@ class MainApp:
 
 App = MainApp()
 """
-The 'game'. Functionally, this does not do much, nor is it some all-encompassing class containing many different files or functions.
-This is primarily a carrier for game-wide information, which may be used in many different locations/situations. The easiest example
-is the actual game state (if the game is in its normal state, or if it is paused, etc.).
+The 'app'. Functionally, this does not do much, nor is it some all-encompassing class containing many different files or functions.
+This is primarily a carrier for app-wide information, which may be used in many different locations/situations. The easiest example
+is the actual app state (if the app is in its normal state, or if it is paused, etc.).
 """
 
 error.addToActionLog("Application setup complete: Begin loading assets")

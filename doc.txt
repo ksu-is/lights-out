@@ -16,7 +16,7 @@ implemented method, probably making use of instanceof and possibly more general 
 -clean up current codebase, and try to make things more elegant than they currently are
 -bring everything into line with the PEP 8 guidelines. remember: this is meant to improve my python
 
--clean up game.py (move functions to outside files when possible)
+-clean up app.py (move functions to outside files when possible)
 -begin creating subclasses of Entity (starting with EntityUI and EntityGameplay)
 
 ===================================================================================================================================================================================
