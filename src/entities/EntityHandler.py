@@ -36,7 +36,7 @@ class EntityHandler:
 
 
 
-    def createEntity(self,game,entity_type=-1,entity_rect=(0,0,0,0),entity_name="", entity_image_src="",entity_depth=-1):
+    def createEntity(self,app,entity_type=-1,entity_rect=(0,0,0,0),entity_name="", entity_image_src="",entity_depth=-1):
         """
         Creates an entity with a given type, and has the option to set other default values.
         However, in most cases, the entity type and the entity rect should be the only arguments
@@ -69,13 +69,13 @@ class EntityHandler:
             error.causeError("Creating Entity Error: "+entity.EntityName,"There was a problem in the createEntity function, before getting to the onCreated function")
 
         try:
-            entity.onCreated(self,game)
+            entity.onCreated(self,app)
         except:
             error.causeError("Creating Entity Error: "+entity.EntityName,"There was a problem in the onCreated function of this entity")
 
 
 
-    def destroyEntity(self,game,entity_id):
+    def destroyEntity(self,app,entity_id):
         """
         Destroys all entities matching the given reference, either entity ID, entity name,
         or entity type. It is important to note, destruction is effectively removing an
@@ -92,7 +92,7 @@ class EntityHandler:
                 error.addToActionLog("Destroyed Entity: "+i.EntityName)
 
                 try:
-                    i.onDestroyed(self,game)
+                    i.onDestroyed(self,app)
                 except:
                     error.causeError("Destroying Entity Error: "+i.EntityName,"There was a problem in the onDestroyed function of this entity") 
 
@@ -120,7 +120,7 @@ class EntityHandler:
             if (i.isinstance(entity_type)): tmpArray.append(i)
         return tmpArray
 
-    def update_all_entities(self,game,input_list):
+    def update_all_entities(self,app,input_list):
         """
         The basis of the logic side of the main application loop. This function
         runs the onUpdate event for every entity in the EntityList (unless their updates
@@ -128,11 +128,11 @@ class EntityHandler:
         as passing the list of active inputs to entities which require user input
         """
         for i in self.EntityList:
-            if ((not i.RestrictUpdate) and game.GameState in i.UpdateStates):
+            if ((not i.RestrictUpdate) and app.GameState in i.UpdateStates):
                 if (i.RequiresInputs):
                     i.Inputs = input_list
                 try:
-                    i.onUpdate(self,game)
+                    i.onUpdate(self,app)
                 except:
                     error.causeError("Updating Entity Error: "+i.EntityName,"There was a problem in the onUpdate function of this entity") 
                 i.Inputs = []    

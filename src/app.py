@@ -1,6 +1,6 @@
 """
 
-Main game file. Includes setup, game variables, and the main loop
+Main application file. Includes setup, application variables, and the main loop
 
 """
 
@@ -62,10 +62,10 @@ pygame.mouse.set_visible(False)
 
 #region Setup game
 
-class MainGame:
-    GameState = states.NORMAL
+class MainApp:
+    AppState = states.NORMAL
 
-Game = MainGame()
+App = MainApp()
 """
 The 'game'. Functionally, this does not do much, nor is it some all-encompassing class containing many different files or functions.
 This is primarily a carrier for game-wide information, which may be used in many different locations/situations. The easiest example
@@ -99,7 +99,7 @@ error.addToActionLog("Loading assets: All sounds loaded")
 #endregion
 
 
-EntityHandler.createEntity(Game,EntityTypeList.Player,(16,16,8,8),"Player","player")
+EntityHandler.createEntity(App,EntityTypeList.Player,(16,16,8,8),"Player","player")
 
 sound.playSound("main_menu",-1)
 
@@ -169,7 +169,7 @@ InputList = []
 def logic_all():
 
     global InputList
-    global Game
+    global App
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT: error.exitSafely()
@@ -179,7 +179,7 @@ def logic_all():
 
         InputList.append(event)
 
-    EntityHandler.update_all_entities(Game,InputList)
+    EntityHandler.update_all_entities(App,InputList)
 
     InputList = []
 

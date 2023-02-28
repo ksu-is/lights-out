@@ -1,7 +1,7 @@
 """
 The base entity class.
-\n Most likely, every entity in the game will be inherited from this file and its children.
-\nThis will probably not be used to create actual game entities.
+\n Most likely, every entity in the app will be inherited from this file and its children.
+\nThis will probably not be used to create actual app entities.
 """
 
 import pygame
@@ -38,7 +38,7 @@ class Entity:
         except:
             error.causeError("Entity Initializing Error","There was an error in the __init__ function for an entity. This means it happened BEFORE finishing either the createEntity or onCreated functions")
 
-    def onCreated(self,entity_handler,game):
+    def onCreated(self,entity_handler,app):
         """
         An entity's creation function.
         This function will only be run once, when the entity is created,
@@ -49,7 +49,7 @@ class Entity:
         """
         pass
 
-    def onDestroyed(self,entity_handler,game):
+    def onDestroyed(self,entity_handler,app):
         """
         An entity's destruction function.
         This function will only be run once, when the entity is destroyed,
@@ -62,7 +62,7 @@ class Entity:
         """
         pass
 
-    def onUpdate(self,entity_handler,game):
+    def onUpdate(self,entity_handler,app):
         """
         An entity's update function.
         Every time the main loop is run, all entities in the
@@ -73,7 +73,7 @@ class Entity:
         for event in self.Inputs:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_a:
-                    entity_handler.destroyEntity(game,"Player")
+                    entity_handler.destroyEntity(app,"Player")
                     sound.stopSound("main_menu")
         pass
 
