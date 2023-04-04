@@ -29,6 +29,7 @@ def addImageSource(source_string):
     """
     Function used to add new image sources, or any new image files required.
     This should be used in the main file only, as imported from render.py
+    NOTE: All image files should have a .gif extension
     """
 
     try:

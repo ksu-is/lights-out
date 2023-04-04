@@ -1,7 +1,5 @@
 """
-The base entity class.
-\n Most likely, every entity in the app will be inherited from this file and its children.
-\nThis will probably not be used to create actual app entities.
+The light entity class.
 """
 
 import pygame
@@ -9,17 +7,16 @@ import util
 from common import states
 import error
 import sound
+from entities.Entity import Entity
 
-class Entity:
+class EntityLight(Entity):
     """
-    The highest level Entity class. All entities will be either instances of this class or (more likely) instances
-    of its children classes. Contains basic entity functionality, including basic rendering, updating, creating,
-    and destroying
+    The light entity class. Should handle all possible states a 'light' may have
     """
     def __init__(self):
         try:
-            self.EntityID = 0
-            self.EntityType = -1
+            super().__init__()
+            self.EntityType = 0
             self.EntityName = ""
             self.EntityImageSource = ""
 
@@ -35,7 +32,10 @@ class Entity:
             self.RequiresInputs = True #eventually replace this with false, Player and UI elements will likely be the only entities which need inputs
 
             self.Inputs = []
-            self.MouseCoords = (0,0)
+
+            self.PowerX = 0
+            self.PowerY = 0
+
         except:
             error.causeError("Entity Initializing Error","There was an error in the __init__ function for an entity. This means it happened BEFORE finishing either the createEntity or onCreated functions")
 
@@ -71,10 +71,21 @@ class Entity:
         function should run. If yes, then run the function.
         """
         
+
+
         for event in self.Inputs:
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_a:
-                    entity_handler.destroyEntity(app,"Player")
-                    sound.stopSound("main_menu")
+            if event.type == pygame.MOUSEBUTTONUP:
+                if entity_handler.mouseOverEntity(self):
+                    self.initialFlip(entity_handler)
         pass
+
+    def initialFlip(self,entity_handler):
+        for entity in entity_handler.EntityList:
+            if entity.EntityType == 0:
+                if abs(self.PowerX-entity.PowerX)<=1 and abs(self.PowerY-entity.PowerY)<=1:
+                    entity.secondaryFlip()
+            pass
+    def secondaryFlip(self):
+        if self.EntityImageSource == "light_off": self.EntityImageSource = "light_on"
+        else: self.EntityImageSource = "light_off"
 

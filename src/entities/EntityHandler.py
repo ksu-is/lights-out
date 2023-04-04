@@ -73,6 +73,7 @@ class EntityHandler:
         except:
             error.causeError("Creating Entity Error: "+entity.EntityName,"There was a problem in the onCreated function of this entity")
 
+        return entity
 
 
     def destroyEntity(self,app,entity_id):
@@ -120,21 +121,28 @@ class EntityHandler:
             if (i.isinstance(entity_type)): tmpArray.append(i)
         return tmpArray
 
-    def update_all_entities(self,app,input_list):
+    def update_all_entities(self,app,input_list,mouse_coords=(0,0)):
         """
         The basis of the logic side of the main application loop. This function
         runs the onUpdate event for every entity in the EntityList (unless their updates
         are restricted or they shouldn't update based on the current state), as well
         as passing the list of active inputs to entities which require user input
+        NOTE: reqires itself (the entity handler), the application object, a list of inputs,
+        as well as the application mouse coords, for handling mouse-related input testing
         """
         for i in self.EntityList:
-            if ((not i.RestrictUpdate) and app.GameState in i.UpdateStates):
+            if ((not i.RestrictUpdate) and app.AppState in i.UpdateStates):
                 if (i.RequiresInputs):
                     i.Inputs = input_list
+                    i.MouseCoords = mouse_coords
                 try:
                     i.onUpdate(self,app)
                 except:
                     error.causeError("Updating Entity Error: "+i.EntityName,"There was a problem in the onUpdate function of this entity") 
                 i.Inputs = []    
+
+
+    def mouseOverEntity(self,entity):
+        return util.isPointInRect(entity.MouseCoords,entity.EntityRect)
 
 EntityHandler = EntityHandler()

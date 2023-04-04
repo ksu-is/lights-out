@@ -3,6 +3,8 @@ Contains the EntityTypes class, and the EntityTypeList.
 """
 
 from entities.Entity import Entity
+from entities.EntityLight import EntityLight
+from entities.EntityLightControl import EntityLightControl
 
 class EntityTypes:
     """
@@ -17,9 +19,9 @@ class EntityTypes:
     """
     def __init__(self):
 
-        self.Player = 0
+        self.Light = 0
 
-        self.Wall = 1
+        self.LightControl = 1
 
         self.Enemy = 2
 
@@ -28,11 +30,11 @@ class EntityTypes:
     def getNewEntity(self,entity_type):
         match entity_type:
 
-            case self.Player:
-                return Entity()
+            case self.Light:
+                return EntityLight()
 
-            case self.Wall:
-                return Entity()
+            case self.LightControl:
+                return EntityLightControl()
 
             case _:
                 return Entity()

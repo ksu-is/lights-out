@@ -56,7 +56,7 @@ screen = window.subsurface(0,0,window.get_width(),window.get_height())
 
 pygame.display.set_caption("")
 
-pygame.mouse.set_visible(False)
+pygame.mouse.set_visible(True)
 
 #endregion
 
@@ -79,13 +79,17 @@ error.addToActionLog("Application setup complete: Begin loading assets")
 
 #region Handle images (add images here)
 
-render.addImageSource("player")
-render.addImageSource("mouse")
-render.addImageSource("intro_ball")
+render.addImageSource("light_on")
+render.addImageSource("light_off")
+render.addImageSource("light_flash")
+render.addImageSource("correct_on")
+render.addImageSource("correct_off")
+render.addImageSource("wrong_on")
+render.addImageSource("wrong_off")
 
 error.addToActionLog("Loading assets: All images loaded")
 
-pygame.display.set_icon(render.getImageSource("player").ImageLoad)
+pygame.display.set_icon(render.getImageSource("light_on").ImageLoad)
 
 #endregion
 
@@ -99,7 +103,7 @@ error.addToActionLog("Loading assets: All sounds loaded")
 #endregion
 
 
-EntityHandler.createEntity(App,EntityTypeList.Player,(16,16,8,8),"Player","player")
+EntityHandler.createEntity(App,EntityTypeList.LightControl,(0,0,0,0),"LightControl","")
 
 sound.playSound("main_menu",-1)
 
@@ -116,7 +120,7 @@ def render_all():
         render.renderEntities(EntityHandler,screen,DISPLAY_SCALE)
 
         #always render mouse above all entities
-        render.renderMouse("mouse",screen,DISPLAY_SCALE,SCREEN_X,SCREEN_Y)
+        #render.renderMouse("mouse",screen,DISPLAY_SCALE,SCREEN_X,SCREEN_Y)
 
         pygame.display.flip()
 
@@ -171,6 +175,11 @@ def logic_all():
     global InputList
     global App
 
+    global screen
+    global DISPLAY_SCALE
+    global SCREEN_X
+    global SCREEN_Y
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT: error.exitSafely()
 
@@ -179,7 +188,9 @@ def logic_all():
 
         InputList.append(event)
 
-    EntityHandler.update_all_entities(App,InputList)
+    tmp_m_coords = util.getApplicationMouseCoords(screen,DISPLAY_SCALE,SCREEN_X,SCREEN_Y)
+
+    EntityHandler.update_all_entities(App,InputList,tmp_m_coords)
 
     InputList = []
 

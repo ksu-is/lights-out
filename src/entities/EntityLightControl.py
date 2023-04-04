@@ -1,7 +1,5 @@
 """
-The base entity class.
-\n Most likely, every entity in the app will be inherited from this file and its children.
-\nThis will probably not be used to create actual app entities.
+The light control entity class.
 """
 
 import pygame
@@ -9,33 +7,49 @@ import util
 from common import states
 import error
 import sound
+import secrets
+from entities.Entity import Entity
 
-class Entity:
+class EntityLightControl(Entity):
     """
-    The highest level Entity class. All entities will be either instances of this class or (more likely) instances
-    of its children classes. Contains basic entity functionality, including basic rendering, updating, creating,
-    and destroying
+    The light control entity class. Should be responsible for creating and maintaining the 'grid' of lights
     """
     def __init__(self):
         try:
-            self.EntityID = 0
-            self.EntityType = -1
+            super().__init__()
+            self.EntityType = 1
             self.EntityName = ""
             self.EntityImageSource = ""
 
             self.EntityRect = pygame.Rect(0,0,0,0)
 
-            self.EntityVisible = True
+            self.EntityVisible = False
 
             self.EntityDepth = 1000
 
             self.RestrictUpdate = False
             self.UpdateStates = [states.NORMAL]
 
-            self.RequiresInputs = True #eventually replace this with false, Player and UI elements will likely be the only entities which need inputs
+            self.RequiresInputs = True 
 
             self.Inputs = []
-            self.MouseCoords = (0,0)
+
+            self.SolutionGrid = []
+
+            self.GridWidth = 8
+            self.GridHeight = 8
+
+            self.SolutionGrid = [[1 for i in range(self.GridWidth)] for j in range(self.GridHeight)]
+
+            print(self.SolutionGrid)
+
+            self.PowerGrid = [row[:] for row in self.SolutionGrid]
+
+            print(self.PowerGrid)
+
+            self.NumberOfComputerFlips = 10
+
+
         except:
             error.causeError("Entity Initializing Error","There was an error in the __init__ function for an entity. This means it happened BEFORE finishing either the createEntity or onCreated functions")
 
@@ -48,6 +62,33 @@ class Entity:
         behaviour that should be run immediately for the entity, but
         that don't make sense to include in __init__
         """
+
+        initial_x = 32
+        initial_y = 16
+
+        spacing = 12
+
+        tmp_x = initial_x
+        tmp_y = initial_y
+
+        for i in range(self.GridWidth):
+            for j in range(self.GridHeight):
+                tmp_entity = entity_handler.createEntity(app,0,(tmp_x,tmp_y,8,8),"Light","light_on")
+                tmp_entity.PowerX = i
+                tmp_entity.PowerY = j
+                tmp_y += spacing
+            tmp_x += spacing
+            tmp_y = initial_y
+
+        for l in range(self.NumberOfComputerFlips):
+            t_x = secrets.randbelow(self.GridWidth)
+            t_y = secrets.randbelow(self.GridHeight)
+            for entity in entity_handler.EntityList:
+                if entity.EntityType == 0:
+                    if (entity.PowerX == t_x and entity.PowerY == t_y):
+                        entity.initialFlip(entity_handler)
+            pass
+
         pass
 
     def onDestroyed(self,entity_handler,app):
@@ -70,11 +111,5 @@ class Entity:
         EntityList are checked to see if their own update
         function should run. If yes, then run the function.
         """
-        
-        for event in self.Inputs:
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_a:
-                    entity_handler.destroyEntity(app,"Player")
-                    sound.stopSound("main_menu")
         pass
 
