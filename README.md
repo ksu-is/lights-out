@@ -1,11 +1,15 @@
-# maybe-a-game
+# lights-out-game
+
+This is Declan Reuschel's project for the IS 3020 class. It is a graphical game built in Python, based on the
+Lights Out electronic game, and built on top of an application framework of my own design. For more information
+on the framework itself, see below, or see the original repository in my personal profile.
+
+--------
 
 This project is being built as a way of understanding more about Python itself, and its differences
 when compared to other languages which I have used in the past. The goal of this project is not only
 to eventually reach some kind of useful framework, but also to be written well, using accepted standards
 of development, and be designed in a way which could be considered 'Pythonic'.
-
---------
 
 This is a simple framework for building applications in Python, through integration with pyGame.
 
