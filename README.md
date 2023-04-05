@@ -21,7 +21,7 @@ sound effects and music.
 
 --------
 
-### Roadmap
+### General Roadmap (more specific roadmap in dedicated file)
 
 - [x] Setup initial board creation and gameplay
 - [x] Create functionality for winning a round, matching the solution
