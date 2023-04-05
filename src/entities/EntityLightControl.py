@@ -55,6 +55,17 @@ class EntityLightControl(Entity):
 
             self.EntityTimers = []
 
+            self.EntityImages = []
+
+            self.MaxMoves = 10
+
+            moveSpacing = 10
+            moveX = 80-self.MaxMoves*moveSpacing/2
+            moveY = 110
+
+            for u in range(self.MaxMoves):
+                self.EntityImages.append(["move_off",pygame.Rect(moveX+moveSpacing*u,moveY,8,8),True])
+
 
         except:
             error.causeError("Entity Initializing Error","There was an error in the __init__ function for an entity. This means it happened BEFORE finishing either the createEntity or onCreated functions")

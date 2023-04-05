@@ -36,6 +36,10 @@ class Entity:
 
             self.Inputs = []
             self.MouseCoords = (0,0)
+
+            #each entity image will have 3 attributes: image source (string), location (rect), and visible (boolean)
+            self.EntityImages = []
+
         except:
             error.causeError("Entity Initializing Error","There was an error in the __init__ function for an entity. This means it happened BEFORE finishing either the createEntity or onCreated functions")
 

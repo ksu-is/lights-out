@@ -86,6 +86,8 @@ render.addImageSource("correct_on")
 render.addImageSource("correct_off")
 render.addImageSource("wrong_on")
 render.addImageSource("wrong_off")
+render.addImageSource("move_on")
+render.addImageSource("move_off")
 
 error.addToActionLog("Loading assets: All images loaded")
 

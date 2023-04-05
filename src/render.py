@@ -85,6 +85,14 @@ def renderEntities(entity_handler,screen,display_scale):
             tmp_img = pygame.transform.scale_by(getImageSource(i.EntityImageSource).ImageLoad,display_scale)
             tmp_imgrect = getImageSourceRect(i.EntityImageSource)
             screen.blit(tmp_img,((tmp_rect.centerx-tmp_imgrect.width/2)*display_scale,(tmp_rect.centery-tmp_imgrect.height/2)*display_scale,0,0))
+        for entity_image in i.EntityImages:
+            if entity_image[0] != "" and entity_image[1] != None and entity_image[2]:
+                tmp_rect = entity_image[1]
+                tmp_img = pygame.transform.scale_by(getImageSource(entity_image[0]).ImageLoad,display_scale)
+                tmp_imgrect = getImageSourceRect(entity_image[0])
+                screen.blit(tmp_img,((tmp_rect.centerx-tmp_imgrect.width/2)*display_scale,(tmp_rect.centery-tmp_imgrect.height/2)*display_scale,0,0))
+
+
 
 def renderMouse(mouse_img,screen,display_scale,screen_x,screen_y):
     """
