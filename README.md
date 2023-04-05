@@ -21,6 +21,18 @@ sound effects and music.
 
 --------
 
+### Roadmap
+
+- [x] Setup initial board creation and gameplay
+- [ ] Create functionality for winning a round, transitioning to the next
+- [ ] Create functionality for losing a round, resetting for another attempt
+- [ ] Set up move tracking, and ability to undo moves
+- [ ] Create title screen, difficulty selection, and transitions
+- [ ] Add different difficulties based on selection
+- [ ] Improve presentation, polish
+
+--------
+
 ### Framework
 
 'lights-out-game' is built on top of the 'maybe-a-game' application framework, which is itself built using
