@@ -25,7 +25,7 @@ sound effects and music.
 
 - [x] Setup initial board creation and gameplay
 - [x] Create functionality for winning a round, matching the solution
-- [ ] Set up moving to next round
+- [x] Set up moving to next round
 - [ ] Set up move tracking, and ability to undo moves
 - [ ] Create functionality for losing a round, and resetting
 - [ ] Create title screen, difficulty selection, and transitions
