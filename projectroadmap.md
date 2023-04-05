@@ -4,9 +4,11 @@
 - [x] Create functionality for winning a round, matching the solution
 - [x] Set up moving to next round
 - [ ] Set up move tracking, and ability to undo moves
-  - [ ] Add entity to track available number of moves
-  - [ ] Add assets for said entity
-  - [ ] Set up this entity to track the move counter already in the LightControl entity
+  - [x] ~~Add entity to track available number of moves~~
+  - [x] ~~Add assets for said entity~~
+  - [x] Add in ability to render move-tracking images to LightControl entity
+  - [x] Add assets for said images
+  - [ ] Set up these images to track the move counter already in the LightControl entity
   - [ ] Add in move tracker to keep track of previous moves (in LightControl entity)
   - [ ] Add in ability to undo moves through a button (add button entity)
 - [ ] Create functionality for losing a round, and resetting
