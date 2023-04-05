@@ -1,10 +1,31 @@
 # lights-out-game
 
+-------
+
+### Introduction
+
 This is Declan Reuschel's project for the IS 3020 class. It is a graphical game built in Python, based on the
 Lights Out electronic game, and built on top of an application framework of my own design. For more information
 on the framework itself, see below, or see the original repository in my personal profile.
 
 --------
+
+### Overview
+
+'lights-out-game' is based on the electronic Lights Out game. In said game, players must flip a grid of lights
+from a randomized pattern to all being turned on. However, players may only flip one light at a time, and doing
+so also flips all of the lights around it. In this modified version of the game, there will be multiple difficulties
+with steadily harder challenges, as well as a randomized board for each, which will always be guaranteed to be
+solvable. The game will be entirely graphical, using the output line strictly for debugging, and may also have
+sound effects and music.
+
+--------
+
+### Framework
+
+'lights-out-game' is built on top of the 'maybe-a-game' application framework, which is itself built using
+Pygame's integration with the SDL library. The framework itself is in a repository on my private profile,
+but the summary from the project readme is copied below for reference.
 
 >This project is being built as a way of understanding more about Python itself, and its differences
 >when compared to other languages which I have used in the past. The goal of this project is not only
