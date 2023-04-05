@@ -39,7 +39,9 @@ class EntityLightControl(Entity):
             self.GridWidth = 8
             self.GridHeight = 8
 
-            self.SolutionGrid = [[1 for i in range(self.GridWidth)] for j in range(self.GridHeight)]
+            # self.SolutionGrid = [[1 for i in range(self.GridWidth)] for j in range(self.GridHeight)]
+
+            self.SolutionGrid = self.getSolutionGrid(0)
 
             print(self.SolutionGrid)
 
@@ -48,6 +50,8 @@ class EntityLightControl(Entity):
             print(self.PowerGrid)
 
             self.NumberOfComputerFlips = 10
+
+            self.CanPlayerMove = False
 
 
         except:
@@ -77,6 +81,7 @@ class EntityLightControl(Entity):
                 tmp_entity.PowerX = i
                 tmp_entity.PowerY = j
                 tmp_y += spacing
+                if (self.SolutionGrid[i][j] == 0): tmp_entity.EntityImageSource = "light_off"
             tmp_x += spacing
             tmp_y = initial_y
 
@@ -87,9 +92,8 @@ class EntityLightControl(Entity):
                 if entity.EntityType == 0:
                     if (entity.PowerX == t_x and entity.PowerY == t_y):
                         entity.initialFlip(entity_handler)
-            pass
 
-        pass
+        self.CanPlayerMove = True
 
     def onDestroyed(self,entity_handler,app):
         """
@@ -112,4 +116,35 @@ class EntityLightControl(Entity):
         function should run. If yes, then run the function.
         """
         pass
+
+    def getSolutionGrid(self,choice):
+
+        tmpList = [[1 for i in range(self.GridWidth)] for j in range(self.GridHeight)]
+
+        if choice == 0:
+            pass
+        elif choice == 1:
+            tmpList[0] = [0,0,0,0,0,1,0,0]
+            tmpList[1] = [0,1,1,0,0,1,1,0]
+            tmpList[2] = [0,1,1,0,0,0,1,0]
+            tmpList[3] = [0,0,0,0,0,0,1,0]
+            tmpList[4] = [0,0,0,0,0,0,1,0]
+            tmpList[5] = [0,1,1,0,0,0,1,0]
+            tmpList[6] = [0,1,1,0,0,1,1,0]
+            tmpList[7] = [0,0,0,0,0,1,0,0]
+        elif choice == 2:
+            pass
+        elif choice == 3:
+            pass
+
+        return tmpList
+
+    def checkForSolution(self,entity_handler):
+        if (self.PowerGrid == self.SolutionGrid):
+            self.CanPlayerMove = False
+
+            for entity in entity_handler.EntityList:
+                if entity.EntityType == 0:
+                    if entity.EntityImageSource == "light_on": entity.EntityImageSource = "correct_on"
+                    else: entity.EntityImageSource == "correct_off"
 

@@ -76,16 +76,38 @@ class EntityLight(Entity):
         for event in self.Inputs:
             if event.type == pygame.MOUSEBUTTONUP:
                 if entity_handler.mouseOverEntity(self):
-                    self.initialFlip(entity_handler)
+                    if self.getCanPlayerMove(entity_handler):
+                        self.initialFlip(entity_handler)
+                        # self.getLightControl(entity_handler).CanPlayerMove = False
+
         pass
 
     def initialFlip(self,entity_handler):
         for entity in entity_handler.EntityList:
             if entity.EntityType == 0:
                 if abs(self.PowerX-entity.PowerX)<=1 and abs(self.PowerY-entity.PowerY)<=1:
-                    entity.secondaryFlip()
-            pass
-    def secondaryFlip(self):
-        if self.EntityImageSource == "light_off": self.EntityImageSource = "light_on"
-        else: self.EntityImageSource = "light_off"
+                    entity.secondaryFlip(entity_handler)
+        if self.getLightControl(entity_handler) != None:
+            if self.getLightControl(entity_handler).CanPlayerMove: self.getLightControl(entity_handler).checkForSolution(entity_handler)
 
+    def secondaryFlip(self,entity_handler):
+        if self.EntityImageSource == "light_off":
+            self.EntityImageSource = "light_on"
+            if (self.getLightControl(entity_handler) != None):
+                self.getLightControl(entity_handler).PowerGrid[self.PowerX][self.PowerY] = 1
+        else:
+            self.EntityImageSource = "light_off"
+            if (self.getLightControl(entity_handler) != None):
+                self.getLightControl(entity_handler).PowerGrid[self.PowerX][self.PowerY] = 0
+
+    def getLightControl(self,entity_handler):
+        for entity in entity_handler.EntityList:
+            if entity.EntityType == 1:
+                return entity
+            else: return None
+
+    def getCanPlayerMove(self,entity_handler):
+        tmp = self.getLightControl(entity_handler)
+        if tmp != None:
+            return tmp.CanPlayerMove
+        return False
