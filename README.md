@@ -24,9 +24,10 @@ sound effects and music.
 ### Roadmap
 
 - [x] Setup initial board creation and gameplay
-- [ ] Create functionality for winning a round, transitioning to the next
-- [ ] Create functionality for losing a round, resetting for another attempt
+- [x] Create functionality for winning a round, matching the solution
+- [ ] Set up moving to next round
 - [ ] Set up move tracking, and ability to undo moves
+- [ ] Create functionality for losing a round, and resetting
 - [ ] Create title screen, difficulty selection, and transitions
 - [ ] Add different difficulties based on selection
 - [ ] Improve presentation, polish
