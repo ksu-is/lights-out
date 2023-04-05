@@ -53,6 +53,8 @@ class EntityLightControl(Entity):
 
             self.CanPlayerMove = False
 
+            self.EntityTimers = []
+
 
         except:
             error.causeError("Entity Initializing Error","There was an error in the __init__ function for an entity. This means it happened BEFORE finishing either the createEntity or onCreated functions")
@@ -85,13 +87,7 @@ class EntityLightControl(Entity):
             tmp_x += spacing
             tmp_y = initial_y
 
-        for l in range(self.NumberOfComputerFlips):
-            t_x = secrets.randbelow(self.GridWidth)
-            t_y = secrets.randbelow(self.GridHeight)
-            for entity in entity_handler.EntityList:
-                if entity.EntityType == 0:
-                    if (entity.PowerX == t_x and entity.PowerY == t_y):
-                        entity.initialFlip(entity_handler)
+        self.mixPowerGrid(entity_handler)
 
         self.CanPlayerMove = True
 
@@ -115,6 +111,45 @@ class EntityLightControl(Entity):
         EntityList are checked to see if their own update
         function should run. If yes, then run the function.
         """
+
+        for timer in self.EntityTimers:
+            if timer[0] > 0: timer[0] = timer[0]-1
+            else:
+                timer[1](entity_handler)
+                self.EntityTimers.remove(timer)
+
+        pass
+
+    def setupGrid(self,entity_handler):
+
+        self.SolutionGrid = self.getSolutionGrid(0)
+
+        self.PowerGrid = [row[:] for row in self.SolutionGrid]
+
+        for entity in entity_handler.EntityList:
+            if entity.EntityType == 0:
+                entity.EntityVisible = False
+                if self.SolutionGrid[entity.PowerX][entity.PowerY] == 1: entity.EntityImageSource = "light_on"
+                else: entity.EntityImageSource = "light_off"
+
+        self.mixPowerGrid(entity_handler)
+
+        self.CanPlayerMove = True
+
+        for entity in entity_handler.EntityList:
+            if entity.EntityType == 0:
+                entity.EntityVisible = True
+
+        pass
+
+    def mixPowerGrid(self,entity_handler):
+        for l in range(self.NumberOfComputerFlips):
+            t_x = secrets.randbelow(self.GridWidth)
+            t_y = secrets.randbelow(self.GridHeight)
+            for entity in entity_handler.EntityList:
+                if entity.EntityType == 0:
+                    if (entity.PowerX == t_x and entity.PowerY == t_y):
+                        entity.initialFlip(entity_handler)
         pass
 
     def getSolutionGrid(self,choice):
@@ -147,4 +182,6 @@ class EntityLightControl(Entity):
                 if entity.EntityType == 0:
                     if entity.EntityImageSource == "light_on": entity.EntityImageSource = "correct_on"
                     else: entity.EntityImageSource == "correct_off"
+
+            self.EntityTimers.append([270, self.setupGrid])
 
