@@ -1,5 +1,5 @@
 """
-The light entity class.
+The undo button entity class.
 """
 
 import pygame
@@ -9,14 +9,14 @@ import error
 import sound
 from entities.Entity import Entity
 
-class EntityLight(Entity):
+class EntityUndo(Entity):
     """
-    The light entity class. Should handle all possible states a 'light' may have
+    The undo button entity class. Should primarily only handle input, lightcontrol will handle most logic
     """
     def __init__(self):
         try:
             super().__init__()
-            self.EntityType = 0
+            self.EntityType = 2
             self.EntityName = ""
             self.EntityImageSource = ""
 
@@ -32,9 +32,6 @@ class EntityLight(Entity):
             self.RequiresInputs = True #eventually replace this with false, Player and UI elements will likely be the only entities which need inputs
 
             self.Inputs = []
-
-            self.PowerX = 0
-            self.PowerY = 0
 
         except:
             error.causeError("Entity Initializing Error","There was an error in the __init__ function for an entity. This means it happened BEFORE finishing either the createEntity or onCreated functions")
@@ -71,37 +68,21 @@ class EntityLight(Entity):
         function should run. If yes, then run the function.
         """
         
+        if self.getCanPlayerMove(entity_handler):
+            if entity_handler.mouseOverEntity(self):
+                self.EntityImageSource = "undo_hover"
+            elif self.EntityImageSource != "undo_off": self.EntityImageSource = "undo_off"
 
 
         for event in self.Inputs:
             if event.type == pygame.MOUSEBUTTONUP:
                 if entity_handler.mouseOverEntity(self):
-                    if self.getCanPlayerMove(entity_handler):
-                        self.initialFlip(entity_handler)
-                        self.getLightControl(entity_handler).MoveTracker.append((self.PowerX,self.PowerY))
-                        # self.getLightControl(entity_handler).CanPlayerMove = False
+                    if self.getCanPlayerMove(entity_handler) and len(self.getLightControl(entity_handler).MoveTracker) > 0:
+                        self.EntityImageSource = "undo_on"
+                        self.getLightControl(entity_handler).EntityTimers.append([30, self.getLightControl(entity_handler).undoMove])
+                        self.getLightControl(entity_handler).CanPlayerMove = False
 
         pass
-
-    def initialFlip(self,entity_handler):
-        for entity in entity_handler.EntityList:
-            if entity.EntityType == 0:
-                if abs(self.PowerX-entity.PowerX)<=1 and abs(self.PowerY-entity.PowerY)<=1:
-                    entity.secondaryFlip(entity_handler)
-        if self.getLightControl(entity_handler) != None:
-            if self.getLightControl(entity_handler).CanPlayerMove:
-                self.getLightControl(entity_handler).checkForSolution(entity_handler)
-                self.getLightControl(entity_handler).updateMoveTracker(entity_handler)
-
-    def secondaryFlip(self,entity_handler):
-        if self.EntityImageSource == "light_off":
-            self.EntityImageSource = "light_on"
-            if (self.getLightControl(entity_handler) != None):
-                self.getLightControl(entity_handler).PowerGrid[self.PowerX][self.PowerY] = 1
-        else:
-            self.EntityImageSource = "light_off"
-            if (self.getLightControl(entity_handler) != None):
-                self.getLightControl(entity_handler).PowerGrid[self.PowerX][self.PowerY] = 0
 
     def getLightControl(self,entity_handler):
         for entity in entity_handler.EntityList:

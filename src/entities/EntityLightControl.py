@@ -69,6 +69,8 @@ class EntityLightControl(Entity):
                 if u <= self.NumberOfPlayerFlips: self.EntityImages.append(["move_on",pygame.Rect(moveX+moveSpacing*u,moveY,8,8),True])
                 else: self.EntityImages.append(["move_off",pygame.Rect(moveX+moveSpacing*u,moveY,8,8),True])
 
+            self.MoveTracker = []
+
 
         except:
             error.causeError("Entity Initializing Error","There was an error in the __init__ function for an entity. This means it happened BEFORE finishing either the createEntity or onCreated functions")
@@ -103,7 +105,10 @@ class EntityLightControl(Entity):
 
         self.mixPowerGrid(entity_handler)
 
+        entity_handler.createEntity(app,2,(4,110,32,8),"Undo","undo_off")
+
         self.CanPlayerMove = True
+
 
     def onDestroyed(self,entity_handler,app):
         """
@@ -141,6 +146,8 @@ class EntityLightControl(Entity):
         self.PowerGrid = [row[:] for row in self.SolutionGrid]
 
         self.NumberOfPlayerFlips = self.NumberOfComputerFlips
+
+        self.MoveTracker = []
 
         for i in range(len(self.EntityImages)):
             if i <= self.NumberOfPlayerFlips: self.EntityImages[i][0] = "move_on"
@@ -210,6 +217,14 @@ class EntityLightControl(Entity):
                     else: entity.EntityImageSource == "correct_off"
 
             self.EntityTimers.append([270, self.setupGrid])
+        elif self.NumberOfPlayerFlips == 1:
+            self.CanPlayerMove = False
+            for i_entity in entity_handler.EntityList:
+                if i_entity.EntityType == 0:
+                    if i_entity.EntityImageSource == "light_on": i_entity.EntityImageSource = "wrong_on"
+                    else: i_entity.EntityImageSource == "wrong_off"
+            self.EntityTimers.append([180,self.undoMove])
+            self.EntityTimers.append([180,self.resetLightImages])
 
     def updateMoveTracker(self,entity_handler):
         self.NumberOfPlayerFlips -= 1
@@ -217,4 +232,23 @@ class EntityLightControl(Entity):
             if i < self.NumberOfPlayerFlips: self.EntityImages[i][0] = "move_on"
             else: self.EntityImages[i][0] = "move_off"
         pass
+
+    def undoMove(self,entity_handler):
+
+        tmp_tuple = self.MoveTracker.pop()
+
+        for entity in entity_handler.EntityList:
+            if entity.EntityType == 0:
+                if (entity.PowerX == tmp_tuple[0] and entity.PowerY == tmp_tuple[1]):
+                    entity.initialFlip(entity_handler)
+
+        self.NumberOfPlayerFlips += 2
+        self.updateMoveTracker(entity_handler)
+        self.CanPlayerMove = True
+
+    def resetLightImages(self,entity_handler):
+        for entity in entity_handler.EntityList:
+            if entity.EntityType == 0:
+                if self.PowerGrid[entity.PowerX][entity.PowerY] == 1: entity.EntityImageSource = "light_on"
+                else: entity.EntityImageSource = "light_off"
 

@@ -88,6 +88,9 @@ render.addImageSource("wrong_on")
 render.addImageSource("wrong_off")
 render.addImageSource("move_on")
 render.addImageSource("move_off")
+render.addImageSource("undo_on")
+render.addImageSource("undo_off")
+render.addImageSource("undo_hover")
 
 error.addToActionLog("Loading assets: All images loaded")
 

@@ -5,6 +5,7 @@ Contains the EntityTypes class, and the EntityTypeList.
 from entities.Entity import Entity
 from entities.EntityLight import EntityLight
 from entities.EntityLightControl import EntityLightControl
+from entities.EntityUndo import EntityUndo
 
 class EntityTypes:
     """
@@ -23,7 +24,7 @@ class EntityTypes:
 
         self.LightControl = 1
 
-        self.Enemy = 2
+        self.Undo = 2
 
         self.Example = 3
 
@@ -35,6 +36,9 @@ class EntityTypes:
 
             case self.LightControl:
                 return EntityLightControl()
+            
+            case self.Undo:
+                return EntityUndo()
 
             case _:
                 return Entity()
