@@ -49,7 +49,9 @@ class EntityLightControl(Entity):
 
             print(self.PowerGrid)
 
-            self.NumberOfComputerFlips = 10
+            self.NumberOfComputerFlips = 5
+
+            self.NumberOfPlayerFlips = self.NumberOfComputerFlips
 
             self.CanPlayerMove = False
 
@@ -57,14 +59,15 @@ class EntityLightControl(Entity):
 
             self.EntityImages = []
 
-            self.MaxMoves = 10
+            self.MaxMoves = self.NumberOfComputerFlips
 
             moveSpacing = 10
             moveX = 80-self.MaxMoves*moveSpacing/2
             moveY = 110
 
             for u in range(self.MaxMoves):
-                self.EntityImages.append(["move_off",pygame.Rect(moveX+moveSpacing*u,moveY,8,8),True])
+                if u <= self.NumberOfPlayerFlips: self.EntityImages.append(["move_on",pygame.Rect(moveX+moveSpacing*u,moveY,8,8),True])
+                else: self.EntityImages.append(["move_off",pygame.Rect(moveX+moveSpacing*u,moveY,8,8),True])
 
 
         except:
@@ -137,6 +140,12 @@ class EntityLightControl(Entity):
 
         self.PowerGrid = [row[:] for row in self.SolutionGrid]
 
+        self.NumberOfPlayerFlips = self.NumberOfComputerFlips
+
+        for i in range(len(self.EntityImages)):
+            if i <= self.NumberOfPlayerFlips: self.EntityImages[i][0] = "move_on"
+            else: self.EntityImages[i][0] = "move_off"
+
         for entity in entity_handler.EntityList:
             if entity.EntityType == 0:
                 entity.EntityVisible = False
@@ -167,6 +176,10 @@ class EntityLightControl(Entity):
 
         tmpList = [[1 for i in range(self.GridWidth)] for j in range(self.GridHeight)]
 
+        """
+        ==================================
+        DEPRECATED
+
         if choice == 0:
             pass
         elif choice == 1:
@@ -182,7 +195,9 @@ class EntityLightControl(Entity):
             pass
         elif choice == 3:
             pass
-
+        ==================================
+        """
+            
         return tmpList
 
     def checkForSolution(self,entity_handler):
@@ -195,4 +210,11 @@ class EntityLightControl(Entity):
                     else: entity.EntityImageSource == "correct_off"
 
             self.EntityTimers.append([270, self.setupGrid])
+
+    def updateMoveTracker(self,entity_handler):
+        self.NumberOfPlayerFlips -= 1
+        for i in range(len(self.EntityImages)):
+            if i < self.NumberOfPlayerFlips: self.EntityImages[i][0] = "move_on"
+            else: self.EntityImages[i][0] = "move_off"
+        pass
 

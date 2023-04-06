@@ -88,7 +88,9 @@ class EntityLight(Entity):
                 if abs(self.PowerX-entity.PowerX)<=1 and abs(self.PowerY-entity.PowerY)<=1:
                     entity.secondaryFlip(entity_handler)
         if self.getLightControl(entity_handler) != None:
-            if self.getLightControl(entity_handler).CanPlayerMove: self.getLightControl(entity_handler).checkForSolution(entity_handler)
+            if self.getLightControl(entity_handler).CanPlayerMove:
+                self.getLightControl(entity_handler).checkForSolution(entity_handler)
+                self.getLightControl(entity_handler).updateMoveTracker(entity_handler)
 
     def secondaryFlip(self,entity_handler):
         if self.EntityImageSource == "light_off":
