@@ -8,6 +8,7 @@ from common import states
 import error
 import sound
 from entities.Entity import Entity
+import math
 
 class EntityLight(Entity):
     """
@@ -35,6 +36,11 @@ class EntityLight(Entity):
 
             self.PowerX = 0
             self.PowerY = 0
+
+            self.LightX = 0
+            self.LightY = 0
+            self.AnimState = 0
+            self.AnimDelay = 0
 
         except:
             error.causeError("Entity Initializing Error","There was an error in the __init__ function for an entity. This means it happened BEFORE finishing either the createEntity or onCreated functions")
@@ -81,7 +87,25 @@ class EntityLight(Entity):
                         self.getLightControl(entity_handler).MoveTracker.append((self.PowerX,self.PowerY))
                         # self.getLightControl(entity_handler).CanPlayerMove = False
 
-        pass
+
+        if self.AnimState != 0:
+            if self.AnimDelay > 0: self.AnimDelay -= 1
+            else:
+                if self.AnimState == 1:
+                    if self.EntityRect[1] < self.LightY:
+                        self.EntityRect[1] += 5
+                    elif self.EntityRect[1] > self.LightY:
+                        self.EntityRect[1] = self.LightY
+                        self.AnimState = 2
+                        self.AnimDelay = 15
+
+                elif self.AnimState == 2:
+                    self.EntityRect[1] = self.LightY - math.cos(self.AnimDelay)*2
+                    if self.AnimDelay == 0: self.AnimState = 0
+        else:
+            self.EntityRect[0] = self.LightX
+            self.EntityRect[1] = self.LightY
+        
 
     def initialFlip(self,entity_handler):
         for entity in entity_handler.EntityList:

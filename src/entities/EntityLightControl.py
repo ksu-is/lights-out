@@ -36,8 +36,8 @@ class EntityLightControl(Entity):
 
             self.SolutionGrid = []
 
-            self.GridWidth = 8
-            self.GridHeight = 8
+            self.GridWidth = 7
+            self.GridHeight = 7
 
             # self.SolutionGrid = [[1 for i in range(self.GridWidth)] for j in range(self.GridHeight)]
 
@@ -49,7 +49,7 @@ class EntityLightControl(Entity):
 
             print(self.PowerGrid)
 
-            self.NumberOfComputerFlips = 5
+            self.NumberOfComputerFlips = 7
 
             self.NumberOfPlayerFlips = self.NumberOfComputerFlips
 
@@ -62,7 +62,7 @@ class EntityLightControl(Entity):
             self.MaxMoves = self.NumberOfComputerFlips
 
             moveSpacing = 10
-            moveX = 80-self.MaxMoves*moveSpacing/2
+            moveX = 80-(self.MaxMoves)*moveSpacing/2-1
             moveY = 110
 
             for u in range(self.MaxMoves):
@@ -85,19 +85,25 @@ class EntityLightControl(Entity):
         that don't make sense to include in __init__
         """
 
-        initial_x = 32
-        initial_y = 16
-
         spacing = 12
+
+        initial_x = 32
+        initial_x = 80-(self.GridWidth*spacing)/2
+        initial_y = 16
+        initial_y = 60-(self.GridHeight*spacing)/2+4
 
         tmp_x = initial_x
         tmp_y = initial_y
 
         for i in range(self.GridWidth):
             for j in range(self.GridHeight):
-                tmp_entity = entity_handler.createEntity(app,0,(tmp_x,tmp_y,8,8),"Light","light_on")
+                tmp_entity = entity_handler.createEntity(app,0,(tmp_x,-16,8,8),"Light","light_on")
                 tmp_entity.PowerX = i
                 tmp_entity.PowerY = j
+                tmp_entity.LightX = tmp_x
+                tmp_entity.LightY = tmp_y
+                tmp_entity.AnimState = 1
+                tmp_entity.AnimDelay = (i+(self.GridWidth-j)*self.GridWidth)*8
                 tmp_y += spacing
                 if (self.SolutionGrid[i][j] == 0): tmp_entity.EntityImageSource = "light_off"
             tmp_x += spacing
