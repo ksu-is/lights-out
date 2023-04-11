@@ -134,7 +134,6 @@ class EntityLight(Entity):
         return None
 
     def getCanPlayerMove(self,entity_handler):
-        print(entity_handler.EntityList)
         tmp = self.getLightControl(entity_handler)
         if tmp != None:
             return tmp.CanPlayerMove

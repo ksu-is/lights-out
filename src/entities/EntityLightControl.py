@@ -36,8 +36,8 @@ class EntityLightControl(Entity):
 
             self.SolutionGrid = []
 
-            self.GridWidth = 7
-            self.GridHeight = 7
+            self.GridWidth = 7  #default 7, maximum 8
+            self.GridHeight = 7 #default 7, maximum 8
 
             # self.SolutionGrid = [[1 for i in range(self.GridWidth)] for j in range(self.GridHeight)]
 
@@ -70,8 +70,6 @@ class EntityLightControl(Entity):
                 else: self.EntityImages.append(["move_off",pygame.Rect(moveX+moveSpacing*u,moveY,8,8),True])
 
             self.MoveTracker = []
-
-            self.testFlag = True
 
 
         except:
@@ -147,11 +145,6 @@ class EntityLightControl(Entity):
             else:
                 timer[1](entity_handler)
                 self.EntityTimers.remove(timer)
-
-        if self.testFlag:
-            self.testFlag = False
-            error.addToActionLog(str(self.EntityType))
-
 
         pass
 

@@ -31,8 +31,6 @@ class EntityUndo(Entity):
 
             self.RequiresInputs = True #eventually replace this with false, Player and UI elements will likely be the only entities which need inputs
 
-            self.testFlag = False
-
             self.Inputs = []
 
         except:
@@ -88,8 +86,6 @@ class EntityUndo(Entity):
 
     def getLightControl(self,entity_handler):
         for entity in entity_handler.EntityList:
-            if (not self.testFlag): 
-                    self.testFlag = True
             if entity.EntityType == 1:
                 return entity
         return None
