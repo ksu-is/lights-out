@@ -23,6 +23,8 @@ class Entity:
             self.EntityName = ""
             self.EntityImageSource = ""
 
+            self.FirstTickActive = True
+
             self.EntityRect = pygame.Rect(0,0,0,0)
 
             self.EntityVisible = True

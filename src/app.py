@@ -91,6 +91,11 @@ render.addImageSource("move_off")
 render.addImageSource("undo_on")
 render.addImageSource("undo_off")
 render.addImageSource("undo_hover")
+render.addImageSource("title_on")
+render.addImageSource("title_off")
+render.addImageSource("normal_on")
+render.addImageSource("normal_off")
+
 
 error.addToActionLog("Loading assets: All images loaded")
 
@@ -108,7 +113,9 @@ error.addToActionLog("Loading assets: All sounds loaded")
 #endregion
 
 
-EntityHandler.createEntity(App,EntityTypeList.LightControl,(0,0,0,0),"LightControl","")
+#EntityHandler.createEntity(App,EntityTypeList.LightControl,(0,0,0,0),"LightControl","")
+EntityHandler.createEntity(App,EntityTypeList.Title,(43,32,88,16),"Title","title_on")
+EntityHandler.createEntity(App,EntityTypeList.Normal,(53,64,48,16),"Normal","normal_off")
 
 sound.playSound("main_menu",-1)
 

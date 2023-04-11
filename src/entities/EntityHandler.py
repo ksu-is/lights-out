@@ -131,7 +131,7 @@ class EntityHandler:
         as well as the application mouse coords, for handling mouse-related input testing
         """
         for i in self.EntityList:
-            if ((not i.RestrictUpdate) and app.AppState in i.UpdateStates):
+            if ((not i.RestrictUpdate) and app.AppState in i.UpdateStates and (not i.FirstTickActive)):
                 if (i.RequiresInputs):
                     i.Inputs = input_list
                     i.MouseCoords = mouse_coords
@@ -139,7 +139,11 @@ class EntityHandler:
                     i.onUpdate(self,app)
                 except:
                     error.causeError("Updating Entity Error: "+i.EntityName,"There was a problem in the onUpdate function of this entity") 
-                i.Inputs = []    
+                i.Inputs = []
+
+        for j in self.EntityList:
+            if (not j.RestrictUpdate) and app.AppState in j.UpdateStates and j.FirstTickActive:
+                j.FirstTickActive = False
 
 
     def mouseOverEntity(self,entity):

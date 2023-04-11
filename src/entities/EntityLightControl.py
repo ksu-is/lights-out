@@ -71,6 +71,8 @@ class EntityLightControl(Entity):
 
             self.MoveTracker = []
 
+            self.testFlag = True
+
 
         except:
             error.causeError("Entity Initializing Error","There was an error in the __init__ function for an entity. This means it happened BEFORE finishing either the createEntity or onCreated functions")
@@ -84,6 +86,7 @@ class EntityLightControl(Entity):
         behaviour that should be run immediately for the entity, but
         that don't make sense to include in __init__
         """
+
 
         spacing = 12
 
@@ -115,6 +118,8 @@ class EntityLightControl(Entity):
 
         self.CanPlayerMove = True
 
+        self.EntityTimers.append([180,self.letPlayerMove])
+
 
     def onDestroyed(self,entity_handler,app):
         """
@@ -142,6 +147,11 @@ class EntityLightControl(Entity):
             else:
                 timer[1](entity_handler)
                 self.EntityTimers.remove(timer)
+
+        if self.testFlag:
+            self.testFlag = False
+            error.addToActionLog(str(self.EntityType))
+
 
         pass
 
@@ -258,3 +268,6 @@ class EntityLightControl(Entity):
                 if self.PowerGrid[entity.PowerX][entity.PowerY] == 1: entity.EntityImageSource = "light_on"
                 else: entity.EntityImageSource = "light_off"
 
+    def letPlayerMove(self,entity_handler):
+        self.CanPlayerMove = True
+        

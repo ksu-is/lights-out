@@ -1,5 +1,5 @@
 """
-The undo button entity class.
+The normal play button entity class.
 """
 
 import pygame
@@ -9,14 +9,14 @@ import error
 import sound
 from entities.Entity import Entity
 
-class EntityUndo(Entity):
+class EntityNormal(Entity):
     """
-    The undo button entity class. Should primarily only handle input, lightcontrol will handle most logic
+    The normal play button entity class. Should begin a normal game
     """
     def __init__(self):
         try:
             super().__init__()
-            self.EntityType = 2
+            self.EntityType = 4
             self.EntityName = ""
             self.EntityImageSource = ""
 
@@ -31,9 +31,9 @@ class EntityUndo(Entity):
 
             self.RequiresInputs = True #eventually replace this with false, Player and UI elements will likely be the only entities which need inputs
 
-            self.testFlag = False
-
             self.Inputs = []
+
+            self.AnimState = 0
 
         except:
             error.causeError("Entity Initializing Error","There was an error in the __init__ function for an entity. This means it happened BEFORE finishing either the createEntity or onCreated functions")
@@ -47,6 +47,10 @@ class EntityUndo(Entity):
         behaviour that should be run immediately for the entity, but
         that don't make sense to include in __init__
         """
+
+        self.AnimState = 1
+        self.EntityRect[1] -= 200
+
         pass
 
     def onDestroyed(self,entity_handler,app):
@@ -69,34 +73,30 @@ class EntityUndo(Entity):
         EntityList are checked to see if their own update
         function should run. If yes, then run the function.
         """
-        
-        if self.getCanPlayerMove(entity_handler):
-            if entity_handler.mouseOverEntity(self):
-                self.EntityImageSource = "undo_hover"
-            elif self.EntityImageSource != "undo_off": self.EntityImageSource = "undo_off"
 
 
         for event in self.Inputs:
             if event.type == pygame.MOUSEBUTTONUP:
                 if entity_handler.mouseOverEntity(self):
-                    if self.getCanPlayerMove(entity_handler) and len(self.getLightControl(entity_handler).MoveTracker) > 0:
-                        self.EntityImageSource = "undo_on"
-                        self.getLightControl(entity_handler).EntityTimers.append([30, self.getLightControl(entity_handler).undoMove])
-                        self.getLightControl(entity_handler).CanPlayerMove = False
+                    if self.EntityImageSource == "normal_off" and self.AnimState == 0:
+                        self.EntityImageSource = "normal_on"
+                        self.AnimState = 2
+                        for entity in entity_handler.EntityList:
+                            if entity.EntityType == 3:
+                                entity.AnimState = 2
+
+        if (self.AnimState == 1):
+            if (self.EntityRect[1] < 64): self.EntityRect[1] += 3
+            else:
+                self.EntityRect[1] = 64
+                self.AnimState = 0
+        elif (self.AnimState == 2):
+            if (self.EntityRect[1] < 184): self.EntityRect[1] += 3
+            else:
+                self.EntityRect[1] = 184
+                self.AnimState = 0
+
+                entity_handler.createEntity(app,1,(0,0,0,0),"LightControl","")
 
         pass
 
-    def getLightControl(self,entity_handler):
-        for entity in entity_handler.EntityList:
-            if (not self.testFlag): 
-                    error.addToActionLog("True")
-                    self.testFlag = True
-            if entity.EntityType == 1:
-                return entity
-        return None
-
-    def getCanPlayerMove(self,entity_handler):
-        tmp = self.getLightControl(entity_handler)
-        if tmp != None:
-            return tmp.CanPlayerMove
-        return False
