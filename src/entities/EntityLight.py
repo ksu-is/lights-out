@@ -128,17 +128,14 @@ class EntityLight(Entity):
                 self.getLightControl(entity_handler).PowerGrid[self.PowerX][self.PowerY] = 0
 
     def getLightControl(self,entity_handler):
-        print("checking list of names:")
         for entity in entity_handler.EntityList:
             if entity.EntityType == 1:
                 return entity
         return None
 
     def getCanPlayerMove(self,entity_handler):
-        print("nyes")
         print(entity_handler.EntityList)
         tmp = self.getLightControl(entity_handler)
         if tmp != None:
-            print("nyet")
             return tmp.CanPlayerMove
         return False

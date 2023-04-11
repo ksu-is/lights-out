@@ -89,7 +89,6 @@ class EntityUndo(Entity):
     def getLightControl(self,entity_handler):
         for entity in entity_handler.EntityList:
             if (not self.testFlag): 
-                    error.addToActionLog("True")
                     self.testFlag = True
             if entity.EntityType == 1:
                 return entity
