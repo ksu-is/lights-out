@@ -1,5 +1,5 @@
 """
-The light entity class.
+The quit button entity class.
 """
 
 import pygame
@@ -8,16 +8,15 @@ from common import states
 import error
 import sound
 from entities.Entity import Entity
-import math
 
-class EntityLight(Entity):
+class EntityQuit(Entity):
     """
-    The light entity class. Should handle all possible states a 'light' may have
+    The quit button entity class. Should primarily only handle input, lightcontrol will handle most logic
     """
     def __init__(self):
         try:
             super().__init__()
-            self.EntityType = 0
+            self.EntityType = 5
             self.EntityName = ""
             self.EntityImageSource = ""
 
@@ -33,14 +32,6 @@ class EntityLight(Entity):
             self.RequiresInputs = True #eventually replace this with false, Player and UI elements will likely be the only entities which need inputs
 
             self.Inputs = []
-
-            self.PowerX = 0
-            self.PowerY = 0
-
-            self.LightX = 0
-            self.LightY = 0
-            self.AnimState = 0
-            self.AnimDelay = 0
 
         except:
             error.causeError("Entity Initializing Error","There was an error in the __init__ function for an entity. This means it happened BEFORE finishing either the createEntity or onCreated functions")
@@ -77,59 +68,21 @@ class EntityLight(Entity):
         function should run. If yes, then run the function.
         """
         
+        if self.getCanPlayerMove(entity_handler):
+            if entity_handler.mouseOverEntity(self):
+                self.EntityImageSource = "undo_hover"
+            elif self.EntityImageSource != "undo_off": self.EntityImageSource = "undo_off"
 
 
         for event in self.Inputs:
             if event.type == pygame.MOUSEBUTTONUP:
                 if entity_handler.mouseOverEntity(self):
                     if self.getCanPlayerMove(entity_handler):
-                        self.initialFlip(entity_handler)
-                        self.getLightControl(entity_handler).MoveTracker.append((self.PowerX,self.PowerY))
-                        # self.getLightControl(entity_handler).CanPlayerMove = False
+                        self.EntityImageSource = "undo_on"
+                        self.getLightControl(entity_handler).EntityTimers.append([5, self.getLightControl(entity_handler).quitGame])
+                        self.getLightControl(entity_handler).CanPlayerMove = False
 
-
-        if self.AnimState != 0:
-            if self.AnimDelay > 0: self.AnimDelay -= 1
-            else:
-                if self.AnimState == 1:
-                    if self.EntityRect[1] < self.LightY:
-                        self.EntityRect[1] += 5
-                    elif self.EntityRect[1] > self.LightY:
-                        self.EntityRect[1] = self.LightY
-                        self.AnimState = 2
-                        self.AnimDelay = 15
-
-                elif self.AnimState == 2:
-                    self.EntityRect[1] = self.LightY - math.cos(self.AnimDelay)*2
-                    if self.AnimDelay == 0: self.AnimState = 0
-                elif self.AnimState == 3:
-                    self.EntityRect[1] += 8
-                    if self.EntityRect[1] > 240:
-                        entity_handler.destroyEntity(self.EntityID)
-        else:
-            self.EntityRect[0] = self.LightX
-            self.EntityRect[1] = self.LightY
-        
-
-    def initialFlip(self,entity_handler):
-        for entity in entity_handler.EntityList:
-            if entity.EntityType == 0:
-                if abs(self.PowerX-entity.PowerX)<=1 and abs(self.PowerY-entity.PowerY)<=1:
-                    entity.secondaryFlip(entity_handler)
-        if self.getLightControl(entity_handler) != None:
-            if self.getLightControl(entity_handler).CanPlayerMove:
-                self.getLightControl(entity_handler).checkForSolution(entity_handler)
-                self.getLightControl(entity_handler).updateMoveTracker(entity_handler)
-
-    def secondaryFlip(self,entity_handler):
-        if self.EntityImageSource == "light_off":
-            self.EntityImageSource = "light_on"
-            if (self.getLightControl(entity_handler) != None):
-                self.getLightControl(entity_handler).PowerGrid[self.PowerX][self.PowerY] = 1
-        else:
-            self.EntityImageSource = "light_off"
-            if (self.getLightControl(entity_handler) != None):
-                self.getLightControl(entity_handler).PowerGrid[self.PowerX][self.PowerY] = 0
+        pass
 
     def getLightControl(self,entity_handler):
         for entity in entity_handler.EntityList:

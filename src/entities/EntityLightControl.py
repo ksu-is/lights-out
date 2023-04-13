@@ -113,6 +113,7 @@ class EntityLightControl(Entity):
         self.mixPowerGrid(entity_handler)
 
         entity_handler.createEntity(app,2,(4,110,32,8),"Undo","undo_off")
+        entity_handler.createEntity(app,5,(4,4,32,8),"Quit","undo_off")
 
         self.CanPlayerMove = True
 
@@ -263,4 +264,26 @@ class EntityLightControl(Entity):
 
     def letPlayerMove(self,entity_handler):
         self.CanPlayerMove = True
+
+    def quitGame(self,entity_handler):
+        for entity in entity_handler.EntityList:
+            if entity.EntityType == 0:
+                entity.AnimState = 3
+                entity.AnimDelay = (entity.PowerX+(self.GridWidth-entity.PowerY)*self.GridWidth)*5
+
+        self.EntityTimers.append([300,self.returnToTitle])
+
+    def returnToTitle(self,entity_handler):
+        entity_handler.destroyEntity("Undo")
+        entity_handler.destroyEntity("Quit")
+        entity_handler.destroyEntity(self.EntityID)
+
+        for entity in entity_handler.EntityList:
+            if entity.EntityType == 3:
+                entity.AnimState = 1
+                entity.EntityRect[1] = 32-240
+            if entity.EntityType == 4:
+                entity.AnimState = 1
+                entity.EntityRect[1] = 64-200
+                entity.EntityImageSource = "normal_off"
         

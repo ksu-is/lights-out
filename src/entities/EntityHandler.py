@@ -76,7 +76,7 @@ class EntityHandler:
         return entity
 
 
-    def destroyEntity(self,app,entity_id):
+    def destroyEntity(self,entity_id,app=None):
         """
         Destroys all entities matching the given reference, either entity ID, entity name,
         or entity type. It is important to note, destruction is effectively removing an

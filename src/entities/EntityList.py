@@ -8,6 +8,7 @@ from entities.EntityLightControl import EntityLightControl
 from entities.EntityUndo import EntityUndo
 from entities.EntityTitle import EntityTitle
 from entities.EntityNormal import EntityNormal
+from entities.EntityQuit import EntityQuit
 
 class EntityTypes:
     """
@@ -32,6 +33,8 @@ class EntityTypes:
 
         self.Normal = 4
 
+        self.Quit = 5
+
     def getNewEntity(self,entity_type):
         match entity_type:
 
@@ -49,6 +52,9 @@ class EntityTypes:
             
             case self.Normal:
                 return EntityNormal()
+            
+            case self.Quit:
+                return EntityQuit()
 
             case _:
                 return Entity()
