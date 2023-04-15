@@ -15,9 +15,8 @@ on the framework itself, see below, or see the original repository in my persona
 'lights-out-game' is based on the electronic Lights Out game. In said game, players must flip a grid of lights
 from a randomized pattern to all being turned on. However, players may only flip one light at a time, and doing
 so also flips all of the lights around it. In this modified version of the game, there will be multiple difficulties
-with steadily harder challenges, as well as a randomized board for each, which will always be guaranteed to be
-solvable. The game will be entirely graphical, using the output line strictly for debugging, and may also have
-sound effects and music.
+with infinite levels, as well as a randomized board for each, which will always be guaranteed to be solvable.
+The game will be entirely graphical, using the output line strictly for debugging, and may also have sound effects and music.
 
 --------
 
@@ -28,7 +27,7 @@ sound effects and music.
 - [x] Set up moving to next round
 - [x] Set up move tracking, and ability to undo moves
 - [x] Create functionality for losing a round, and resetting
-- [ ] Create title screen, difficulty selection, and transitions
+- [x] Create title screen, difficulty selection, and transitions
 - [ ] Add different difficulties based on selection
 - [ ] Improve presentation, polish
 
