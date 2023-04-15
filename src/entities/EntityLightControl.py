@@ -113,7 +113,7 @@ class EntityLightControl(Entity):
         self.mixPowerGrid(entity_handler)
 
         entity_handler.createEntity(app,2,(4,110,32,8),"Undo","undo_off")
-        entity_handler.createEntity(app,5,(4,4,32,8),"Quit","undo_off")
+        entity_handler.createEntity(app,5,(4,4,32,8),"Quit","quit_off")
 
         self.CanPlayerMove = True
 

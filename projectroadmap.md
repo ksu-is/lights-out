@@ -15,9 +15,9 @@
   - [x] Add in functionality for lights flashing incorrect if all moves are used, but the solution has not been reached
   - [x] Set up LightControl to automatically undo the last move if this occurs.
   - Note: there will be no actual 'losing' to this game, players may take as much time as they need to find the solution, or give up and return to the title screen
-- [ ] Create title screen, difficulty selection, and transitions
-  - [ ] Add entities for title text, and difficulty select buttons
-  - [ ] Add transition between title screen and gameplay
+- [x] Create title screen, difficulty selection, and transitions
+  - [x] Add entities for title text, and difficulty select buttons
+  - [x] Add transition between title screen and gameplay
 - [ ] Add different difficulties based on selection
   - [ ] Add in keeping track of 'score' in a round
   - [ ] Add in different amounts of possible moves for each difficulty, (possibly) add in different board sizes as well

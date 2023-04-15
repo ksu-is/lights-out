@@ -70,15 +70,15 @@ class EntityQuit(Entity):
         
         if self.getCanPlayerMove(entity_handler):
             if entity_handler.mouseOverEntity(self):
-                self.EntityImageSource = "undo_hover"
-            elif self.EntityImageSource != "undo_off": self.EntityImageSource = "undo_off"
+                self.EntityImageSource = "quit_hover"
+            elif self.EntityImageSource != "quit_off": self.EntityImageSource = "quit_off"
 
 
         for event in self.Inputs:
             if event.type == pygame.MOUSEBUTTONUP:
                 if entity_handler.mouseOverEntity(self):
                     if self.getCanPlayerMove(entity_handler):
-                        self.EntityImageSource = "undo_on"
+                        self.EntityImageSource = "quit_on"
                         self.getLightControl(entity_handler).EntityTimers.append([5, self.getLightControl(entity_handler).quitGame])
                         self.getLightControl(entity_handler).CanPlayerMove = False
 

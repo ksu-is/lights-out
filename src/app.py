@@ -95,7 +95,9 @@ render.addImageSource("title_on")
 render.addImageSource("title_off")
 render.addImageSource("normal_on")
 render.addImageSource("normal_off")
-
+render.addImageSource("quit_on")
+render.addImageSource("quit_off")
+render.addImageSource("quit_hover")
 
 error.addToActionLog("Loading assets: All images loaded")
 
