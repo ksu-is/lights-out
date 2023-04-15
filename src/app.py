@@ -98,10 +98,13 @@ render.addImageSource("normal_off")
 render.addImageSource("quit_on")
 render.addImageSource("quit_off")
 render.addImageSource("quit_hover")
+render.addImageSource("score_small")
+render.addImageSource("score_medium")
+render.addImageSource("score_big")
 
 error.addToActionLog("Loading assets: All images loaded")
 
-pygame.display.set_icon(render.getImageSource("light_on").ImageLoad)
+pygame.display.set_icon(render.getImageSource("score_big").ImageLoad)
 
 #endregion
 

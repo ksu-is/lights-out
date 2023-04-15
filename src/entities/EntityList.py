@@ -9,6 +9,7 @@ from entities.EntityUndo import EntityUndo
 from entities.EntityTitle import EntityTitle
 from entities.EntityNormal import EntityNormal
 from entities.EntityQuit import EntityQuit
+from entities.EntityScore import EntityScore
 
 class EntityTypes:
     """
@@ -35,6 +36,8 @@ class EntityTypes:
 
         self.Quit = 5
 
+        self.Score = 6
+
     def getNewEntity(self,entity_type):
         match entity_type:
 
@@ -55,6 +58,9 @@ class EntityTypes:
             
             case self.Quit:
                 return EntityQuit()
+            
+            case self.Score:
+                return EntityScore()
 
             case _:
                 return Entity()

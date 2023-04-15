@@ -49,7 +49,7 @@ class EntityLightControl(Entity):
 
             print(self.PowerGrid)
 
-            self.NumberOfComputerFlips = 7
+            self.NumberOfComputerFlips =  3#should be 7
 
             self.NumberOfPlayerFlips = self.NumberOfComputerFlips
 
@@ -70,6 +70,7 @@ class EntityLightControl(Entity):
                 else: self.EntityImages.append(["move_off",pygame.Rect(moveX+moveSpacing*u,moveY,8,8),True])
 
             self.MoveTracker = []
+
 
 
         except:
@@ -114,6 +115,7 @@ class EntityLightControl(Entity):
 
         entity_handler.createEntity(app,2,(4,110,32,8),"Undo","undo_off")
         entity_handler.createEntity(app,5,(4,4,32,8),"Quit","quit_off")
+        entity_handler.createEntity(app,6,(0,0,0,0),"Score","")
 
         self.CanPlayerMove = True
 
@@ -221,10 +223,13 @@ class EntityLightControl(Entity):
         if (self.PowerGrid == self.SolutionGrid):
             self.CanPlayerMove = False
 
+
             for entity in entity_handler.EntityList:
                 if entity.EntityType == 0:
                     if entity.EntityImageSource == "light_on": entity.EntityImageSource = "correct_on"
                     else: entity.EntityImageSource == "correct_off"
+                if entity.EntityType == 6:
+                    entity.addWin(entity_handler)
 
             self.EntityTimers.append([270, self.setupGrid])
         elif self.NumberOfPlayerFlips == 1:
@@ -276,6 +281,7 @@ class EntityLightControl(Entity):
     def returnToTitle(self,entity_handler):
         entity_handler.destroyEntity("Undo")
         entity_handler.destroyEntity("Quit")
+        entity_handler.destroyEntity("Score")
         entity_handler.destroyEntity(self.EntityID)
 
         for entity in entity_handler.EntityList:
