@@ -49,7 +49,7 @@ class EntityLightControl(Entity):
 
             print(self.PowerGrid)
 
-            self.NumberOfComputerFlips =  3#should be 7
+            self.NumberOfComputerFlips =  7#should be 7
 
             self.NumberOfPlayerFlips = self.NumberOfComputerFlips
 
