@@ -89,21 +89,23 @@ class EntityLight(Entity):
 
 
         if self.AnimState != 0:
-            if self.AnimDelay > 0: self.AnimDelay -= 1
+            if self.AnimDelay > 0: 
+                self.AnimDelay -= 1
+                if self.AnimState == 2:
+                    self.EntityRect[1] = self.LightY + self.AnimDelay/2 # self.LightY - math.cos(self.AnimDelay)*2
+                    if self.AnimDelay == 0: self.AnimState = 0
             else:
                 if self.AnimState == 1:
                     if self.EntityRect[1] < self.LightY:
                         self.EntityRect[1] += 5
-                    elif self.EntityRect[1] > self.LightY:
+                    elif self.EntityRect[1] >= self.LightY:
                         self.EntityRect[1] = self.LightY
                         self.AnimState = 2
-                        self.AnimDelay = 15
+                        self.AnimDelay = 15#15
 
-                elif self.AnimState == 2:
-                    self.EntityRect[1] = self.LightY - math.cos(self.AnimDelay)*2
-                    if self.AnimDelay == 0: self.AnimState = 0
                 elif self.AnimState == 3:
-                    self.EntityRect[1] += 8
+                    if self.EntityRect[1] < self.LightY+16: self.EntityRect[1] += 2
+                    else:   self.EntityRect[1] += 8
                     if self.EntityRect[1] > 240:
                         entity_handler.destroyEntity(self.EntityID)
         else:
