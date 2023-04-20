@@ -1,5 +1,5 @@
 """
-The quit button entity class.
+The award marker entity class.
 """
 
 import pygame
@@ -8,16 +8,15 @@ from common import states
 import error
 import sound
 from entities.Entity import Entity
-import math
 
-class EntityScore(Entity):
+class EntityAward(Entity):
     """
-    The score entity class. Should primarily only handle rendering, lightcontrol will handle most logic
+    The award marker entity class. Should primarily only handle input, lightcontrol will handle most logic
     """
     def __init__(self):
         try:
             super().__init__()
-            self.EntityType = 6
+            self.EntityType = 7
             self.EntityName = ""
             self.EntityImageSource = ""
 
@@ -32,11 +31,15 @@ class EntityScore(Entity):
 
             self.RequiresInputs = True #eventually replace this with false, Player and UI elements will likely be the only entities which need inputs
 
-            self.EntityImages = []
+            self.AnimState = 0
+            self.AnimDelay = 10
+
+            self.AwardX = 0
+            self.AwardY = 0
+
+            self.AwardNumber = 0
 
             self.Inputs = []
-
-            self.Wins = 0
 
         except:
             error.causeError("Entity Initializing Error","There was an error in the __init__ function for an entity. This means it happened BEFORE finishing either the createEntity or onCreated functions")
@@ -51,7 +54,9 @@ class EntityScore(Entity):
         that don't make sense to include in __init__
         """
 
-        self.Wins = 0
+        self.AnimState = 1
+        self.EntityRect[0] = self.AwardX
+        self.EntityRect[1] = self.AwardY - 200
 
         pass
 
@@ -75,7 +80,30 @@ class EntityScore(Entity):
         EntityList are checked to see if their own update
         function should run. If yes, then run the function.
         """
-        
+
+        self.EntityRect[0] = self.AwardX
+
+        if self.AnimDelay > 0: 
+            self.AnimDelay -= 1
+            if self.AnimState == 2:
+                self.EntityRect[1] = self.AwardY + self.AnimDelay/2
+                if self.AnimDelay == 0: self.AnimState = 0
+        else:
+            if self.AnimState == 0:
+                self.EntityRect[0] = self.AwardX
+                self.EntityRect[1] = self.AwardY
+            elif self.AnimState == 1:
+                self.EntityRect[1] += 5
+                if self.EntityRect[1] > self.AwardY:
+                    self.AnimState = 2
+                    self.AnimDelay = 15
+
+        if self.AnimState == 3:
+            self.AnimDelay -= 1
+            self.EntityRect[1] += 5
+            if self.AnimDelay == 0:
+                entity_handler.destroyEntity(self.EntityID)
+
         pass
 
     def getLightControl(self,entity_handler):
@@ -89,36 +117,3 @@ class EntityScore(Entity):
         if tmp != None:
             return tmp.CanPlayerMove
         return False
-    
-    def addWin(self,entity_handler):
-        self.Wins += 1
-
-        tmp_image = "score_small"
-
-        tmp_x = 116
-        tmp_y = 21
-        tmp_s = 4
-
-        tmp_row = util.clamp(math.floor((self.Wins-1)/5),0,math.floor((self.Wins-1)/5))
-        tmp_column = self.Wins-tmp_row*5
-
-        tmp_x += 5*tmp_column
-        tmp_y += 8*tmp_row
-
-        if tmp_column == 5:
-            if math.remainder(tmp_row+1,3) == 0: tmp_image = "score_big"
-            else: tmp_image = "score_medium"
-
-        if tmp_image == "score_big":
-            tmp_s = 6
-            tmp_y -= 1
-        #self.EntityImages.append([tmp_image,pygame.Rect(tmp_x,tmp_y,tmp_s,tmp_s),True])
-
-        empty_app = []
-
-        entity = entity_handler.createEntity(empty_app,7,(tmp_x,tmp_y,tmp_s,tmp_s),"Award",tmp_image)
-
-        entity.AwardX = tmp_x
-        entity.AwardY = tmp_y
-
-        entity.AwardNumber = self.Wins
