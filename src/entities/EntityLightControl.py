@@ -220,7 +220,7 @@ class EntityLightControl(Entity):
         return tmpList
 
     def checkForSolution(self,entity_handler):
-        if (self.PowerGrid == self.SolutionGrid):
+        if (self.PowerGrid != self.SolutionGrid):
             self.CanPlayerMove = False
 
 
@@ -277,7 +277,7 @@ class EntityLightControl(Entity):
                 entity.AnimDelay = (entity.PowerX+(self.GridWidth-entity.PowerY)*self.GridWidth)*5
 
         self.EntityTimers.append([300,self.returnToTitle])
-        self.EntityTimers.append([100,self.clearAwards])
+        self.EntityTimers.append([1,self.clearAwards])
 
     def returnToTitle(self,entity_handler):
         entity_handler.destroyEntity("Undo")
@@ -293,10 +293,12 @@ class EntityLightControl(Entity):
                 entity.AnimState = 1
                 entity.EntityRect[1] = 64-200
                 entity.EntityImageSource = "normal_off"
+            
+        entity_handler.destroyEntity("Award")
 
     def clearAwards(self,entity_handler):
         for entity in entity_handler.EntityList:
             if entity.EntityType == 7:
                 entity.AnimState = 3
-                entity.AnimDelay = entity.AwardNumber * 5
+                entity.AnimDelay = entity.AwardNumber * 10
         

@@ -99,10 +99,11 @@ class EntityAward(Entity):
                     self.AnimDelay = 15
 
         if self.AnimState == 3:
-            self.AnimDelay -= 1
-            self.EntityRect[1] += 5
-            if self.AnimDelay == 0:
-                entity_handler.destroyEntity(self.EntityID)
+            if self.AnimDelay > 0: self.AnimDelay -= 1
+            else:
+                if self.EntityRect[1] < self.AwardY+16: self.EntityRect[1] += 2
+                else:   self.EntityRect[1] += 4
+                
 
         pass
 
