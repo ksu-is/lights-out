@@ -220,7 +220,7 @@ class EntityLightControl(Entity):
         return tmpList
 
     def checkForSolution(self,entity_handler):
-        if (self.PowerGrid != self.SolutionGrid):
+        if (self.PowerGrid == self.SolutionGrid):
             self.CanPlayerMove = False
 
 
