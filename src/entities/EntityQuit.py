@@ -31,6 +31,11 @@ class EntityQuit(Entity):
 
             self.RequiresInputs = True #eventually replace this with false, Player and UI elements will likely be the only entities which need inputs
 
+            self.AnimState = 0
+
+            self.FinalX = 0
+            self.FinalY = 0
+
             self.Inputs = []
 
         except:
@@ -45,6 +50,13 @@ class EntityQuit(Entity):
         behaviour that should be run immediately for the entity, but
         that don't make sense to include in __init__
         """
+
+        self.FinalX = self.EntityRect[0]
+        self.FinalY = self.EntityRect[1]
+
+        self.EntityRect[0] -= 48
+        self.AnimState = 1
+
         pass
 
     def onDestroyed(self,entity_handler,app):
@@ -81,6 +93,16 @@ class EntityQuit(Entity):
                         self.EntityImageSource = "quit_on"
                         self.getLightControl(entity_handler).EntityTimers.append([5, self.getLightControl(entity_handler).quitGame])
                         self.getLightControl(entity_handler).CanPlayerMove = False
+
+        if self.AnimState == 0:
+            self.EntityRect[0] = self.FinalX
+            self.EntityRect[1] = self.FinalY
+        elif self.AnimState == 1:
+            if self.EntityRect[0] < self.FinalX: self.EntityRect[0] += 2
+            else: self.AnimState = 0
+        elif self.AnimState == 2:
+            if self.EntityRect[0] > self.EntityRect[0]-48: self.EntityRect[0] -= 2
+            else: entity_handler.destroyEntity("Quit")
 
         pass
 

@@ -65,11 +65,17 @@ class EntityLightControl(Entity):
             moveX = 80-(self.MaxMoves)*moveSpacing/2-1
             moveY = 110
 
+            self.TrackerY = moveY
+
+            moveY += 32
+
             for u in range(self.MaxMoves):
                 if u <= self.NumberOfPlayerFlips: self.EntityImages.append(["move_on",pygame.Rect(moveX+moveSpacing*u,moveY,8,8),True])
                 else: self.EntityImages.append(["move_off",pygame.Rect(moveX+moveSpacing*u,moveY,8,8),True])
 
             self.MoveTracker = []
+
+            self.TrackerState = 0
 
 
 
@@ -121,6 +127,8 @@ class EntityLightControl(Entity):
 
         self.EntityTimers.append([180,self.letPlayerMove])
 
+        self.TrackerState = 1
+
 
     def onDestroyed(self,entity_handler,app):
         """
@@ -148,6 +156,20 @@ class EntityLightControl(Entity):
             else:
                 timer[1](entity_handler)
                 self.EntityTimers.remove(timer)
+
+        image_y = self.EntityImages[0][1][1]
+
+        if self.TrackerState == 0:
+            image_y = self.TrackerY
+        elif self.TrackerState == 1:
+            if image_y > self.TrackerY: image_y -= 1
+            else: self.TrackerState = 0
+        elif self.TrackerState == 2:
+            if image_y < self.TrackerY+32: image_y += 1
+            else: self.TrackerState = 3
+
+        for image in self.EntityImages:
+            image[1][1] = image_y
 
         pass
 
@@ -275,13 +297,16 @@ class EntityLightControl(Entity):
             if entity.EntityType == 0:
                 entity.AnimState = 3
                 entity.AnimDelay = (entity.PowerX+(self.GridWidth-entity.PowerY)*self.GridWidth)*5
+            if entity.EntityType == 2 or entity.EntityType == 5:
+                entity.AnimState = 2
+
 
         self.EntityTimers.append([300,self.returnToTitle])
         self.EntityTimers.append([1,self.clearAwards])
+        self.EntityTimers.append([30,self.clearTrackerAnim])
+
 
     def returnToTitle(self,entity_handler):
-        entity_handler.destroyEntity("Undo")
-        entity_handler.destroyEntity("Quit")
         entity_handler.destroyEntity("Score")
         entity_handler.destroyEntity(self.EntityID)
 
@@ -301,4 +326,7 @@ class EntityLightControl(Entity):
             if entity.EntityType == 7:
                 entity.AnimState = 3
                 entity.AnimDelay = entity.AwardNumber * 10
+
+    def clearTrackerAnim(self,entity_handler):
+        self.TrackerState = 2
         
