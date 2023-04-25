@@ -35,6 +35,9 @@ class EntityNormal(Entity):
 
             self.AnimState = 0
 
+            self.EntityImages.append(["normal_off",pygame.Rect(0,0,48,16),True])
+            self.EntityImages.append(["normal_on",pygame.Rect(0,0,48,16),True])
+
         except:
             error.causeError("Entity Initializing Error","There was an error in the __init__ function for an entity. This means it happened BEFORE finishing either the createEntity or onCreated functions")
 
@@ -50,6 +53,9 @@ class EntityNormal(Entity):
 
         self.AnimState = 1
         self.EntityRect[1] -= 200
+
+        self.EntityImages[0][1][0] = self.EntityRect[0]
+        self.EntityImages[1][1][0] = self.EntityRect[0]
 
         pass
 
@@ -74,6 +80,13 @@ class EntityNormal(Entity):
         function should run. If yes, then run the function.
         """
 
+        self.EntityImages[0][1][1] = self.EntityRect[1]
+        self.EntityImages[1][1][1] = self.EntityRect[1]+24
+
+        self.EntityImages[0][1][0] = self.EntityRect[0]
+        self.EntityImages[1][1][0] = self.EntityRect[0]
+
+
 
         for event in self.Inputs:
             if event.type == pygame.MOUSEBUTTONUP:
@@ -96,7 +109,13 @@ class EntityNormal(Entity):
                 self.EntityRect[1] = 184
                 self.AnimState = 0
 
-                entity_handler.createEntity(app,1,(0,0,0,0),"LightControl","")
+                self.beginGame(entity_handler,app,0)
+
+                #entity_handler.createEntity(app,1,(0,0,0,0),"LightControl","")
 
         pass
+
+    def beginGame(self,entity_handler,app,difficulty):
+        entity = entity_handler.createEntity(app,1,(0,0,0,0),"LightControl","")
+        entity.Difficulty = difficulty
 
