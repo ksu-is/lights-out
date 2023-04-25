@@ -18,10 +18,10 @@
 - [x] Create title screen, difficulty selection, and transitions
   - [x] Add entities for title text, and difficulty select buttons
   - [x] Add transition between title screen and gameplay
-- [ ] Add different difficulties based on selection
+- [x] Add different difficulties based on selection
   - [x] Add in keeping track of 'score' in a round
   - [x] Add in transitions for more board elements
-  - [ ] Add in different amounts of possible moves for each difficulty, (possibly) add in different board sizes as well
+  - [x] Add in different amounts of possible moves for each difficulty, (possibly) add in different board sizes as well
 - [ ] Improve presentation, polish
   - [ ] Add in music, sound effects
   - [ ] Add any remaining required graphics

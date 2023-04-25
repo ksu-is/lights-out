@@ -28,7 +28,7 @@ The game will be entirely graphical, using the output line strictly for debuggin
 - [x] Set up move tracking, and ability to undo moves
 - [x] Create functionality for losing a round, and resetting
 - [x] Create title screen, difficulty selection, and transitions
-- [ ] Add different difficulties based on selection
+- [x] Add different difficulties based on selection
 - [ ] Improve presentation, polish
 
 --------
