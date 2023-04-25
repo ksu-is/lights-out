@@ -89,6 +89,8 @@ class EntityLightControl(Entity):
         that don't make sense to include in __init__
         """
 
+        self.Difficulty = self.EntityRect[0]
+
         if self.Difficulty == 0:
             self.GridHeight = 7
             self.GridWidth = 7
@@ -354,7 +356,7 @@ class EntityLightControl(Entity):
             if entity.EntityType == 4:
                 entity.AnimState = 1
                 entity.EntityRect[1] = 64-200
-                entity.EntityImageSource = "normal_off"
+                entity.resetImages(entity_handler)
             
         entity_handler.destroyEntity("Award")
 

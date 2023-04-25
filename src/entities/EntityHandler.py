@@ -148,5 +148,8 @@ class EntityHandler:
 
     def mouseOverEntity(self,entity):
         return util.isPointInRect(entity.MouseCoords,entity.EntityRect)
+    
+    def mouseOverRect(self,entity,rect):
+        return util.isPointInRect(entity.MouseCoords,rect)
 
 EntityHandler = EntityHandler()

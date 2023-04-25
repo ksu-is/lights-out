@@ -36,7 +36,12 @@ class EntityNormal(Entity):
             self.AnimState = 0
 
             self.EntityImages.append(["normal_off",pygame.Rect(0,0,48,16),True])
-            self.EntityImages.append(["normal_on",pygame.Rect(0,0,48,16),True])
+            self.EntityImages.append(["normal_off",pygame.Rect(0,0,48,16),True])
+            self.EntityImages.append(["normal_off",pygame.Rect(0,0,48,16),True])
+
+            self.Option = 0
+
+            self.EntityVisible = False
 
         except:
             error.causeError("Entity Initializing Error","There was an error in the __init__ function for an entity. This means it happened BEFORE finishing either the createEntity or onCreated functions")
@@ -56,6 +61,7 @@ class EntityNormal(Entity):
 
         self.EntityImages[0][1][0] = self.EntityRect[0]
         self.EntityImages[1][1][0] = self.EntityRect[0]
+        self.EntityImages[2][1][0] = self.EntityRect[0]
 
         pass
 
@@ -80,23 +86,28 @@ class EntityNormal(Entity):
         function should run. If yes, then run the function.
         """
 
-        self.EntityImages[0][1][1] = self.EntityRect[1]
-        self.EntityImages[1][1][1] = self.EntityRect[1]+24
+        self.EntityImages[0][1][1] = self.EntityRect[1]-4
+        self.EntityImages[1][1][1] = self.EntityRect[1]+14
+        self.EntityImages[2][1][1] = self.EntityRect[1]+32
 
         self.EntityImages[0][1][0] = self.EntityRect[0]
         self.EntityImages[1][1][0] = self.EntityRect[0]
+        self.EntityImages[2][1][0] = self.EntityRect[0]
 
 
 
         for event in self.Inputs:
             if event.type == pygame.MOUSEBUTTONUP:
-                if entity_handler.mouseOverEntity(self):
-                    if self.EntityImageSource == "normal_off" and self.AnimState == 0:
-                        self.EntityImageSource = "normal_on"
-                        self.AnimState = 2
-                        for entity in entity_handler.EntityList:
-                            if entity.EntityType == 3:
-                                entity.AnimState = 2
+                if self.EntityImages[0][0] == "normal_off" and self.AnimState == 0:
+                    if entity_handler.mouseOverRect(self,self.EntityImages[0][1]):
+                        self.EntityImages[0][0] = "normal_on"
+                        self.readyGame(entity_handler,app,0)
+                    if entity_handler.mouseOverRect(self,self.EntityImages[1][1]):
+                        self.EntityImages[1][0] = "normal_on"
+                        self.readyGame(entity_handler,app,1)
+                    if entity_handler.mouseOverRect(self,self.EntityImages[2][1]):
+                        self.EntityImages[2][0] = "normal_on"
+                        self.readyGame(entity_handler,app,2)
 
         if (self.AnimState == 1):
             if (self.EntityRect[1] < 64): self.EntityRect[1] += 3
@@ -109,13 +120,28 @@ class EntityNormal(Entity):
                 self.EntityRect[1] = 184
                 self.AnimState = 0
 
-                self.beginGame(entity_handler,app,0)
+                self.beginGame(entity_handler,app,self.Option)
 
                 #entity_handler.createEntity(app,1,(0,0,0,0),"LightControl","")
 
         pass
 
     def beginGame(self,entity_handler,app,difficulty):
-        entity = entity_handler.createEntity(app,1,(0,0,0,0),"LightControl","")
+        entity = entity_handler.createEntity(app,1,(difficulty,0,0,0),"LightControl","")
         entity.Difficulty = difficulty
+
+    def readyGame(self,entity_handler,app,difficulty):
+        #self.EntityImages[0][0] = "normal_on"
+        self.AnimState = 2
+
+        for entity in entity_handler.EntityList:
+            if entity.EntityType == 3:
+                entity.AnimState = 2
+
+        self.Option = difficulty
+
+    def resetImages(self,entity_handler):
+        self.EntityImages[0][0] = "normal_off"
+        self.EntityImages[1][0] = "normal_off"
+        self.EntityImages[2][0] = "normal_off"
 
