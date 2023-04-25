@@ -105,6 +105,8 @@ render.addImageSource("quit_hover")
 render.addImageSource("score_small")
 render.addImageSource("score_medium")
 render.addImageSource("score_big")
+render.addImageSource("background")
+render.addImageSource("background_small")
 
 error.addToActionLog("Loading assets: All images loaded")
 
@@ -125,6 +127,8 @@ error.addToActionLog("Loading assets: All sounds loaded")
 #EntityHandler.createEntity(App,EntityTypeList.LightControl,(0,0,0,0),"LightControl","")
 EntityHandler.createEntity(App,EntityTypeList.Title,(43,32,88,16),"Title","title_on")
 EntityHandler.createEntity(App,EntityTypeList.Normal,(53,64,48,16),"Normal","normal_off")
+
+EntityHandler.createEntity(App,EntityTypeList.Background,(0,0,160,120),"Background","background_small")
 
 sound.playSound("main_menu",-1)
 

@@ -11,6 +11,7 @@ from entities.EntityNormal import EntityNormal
 from entities.EntityQuit import EntityQuit
 from entities.EntityScore import EntityScore
 from entities.EntityAward import EntityAward
+from entities.EntityBackground import EntityBackground
 
 class EntityTypes:
     """
@@ -41,6 +42,8 @@ class EntityTypes:
 
         self.Award = 7
 
+        self.Background = 8
+
     def getNewEntity(self,entity_type):
         match entity_type:
 
@@ -67,6 +70,9 @@ class EntityTypes:
             
             case self.Award:
                 return EntityAward()
+            
+            case self.Background:
+                return EntityBackground()
 
             case _:
                 return Entity()
