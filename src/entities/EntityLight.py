@@ -42,6 +42,9 @@ class EntityLight(Entity):
             self.AnimState = 0
             self.AnimDelay = 0
 
+            self.SizeDelay = 0
+            self.MaxSizeDelay = 30
+
         except:
             error.causeError("Entity Initializing Error","There was an error in the __init__ function for an entity. This means it happened BEFORE finishing either the createEntity or onCreated functions")
 
@@ -89,6 +92,7 @@ class EntityLight(Entity):
 
 
         if self.AnimState != 0:
+            self.SizeDelay = 0
             if self.AnimDelay > 0: 
                 self.AnimDelay -= 1
                 if self.AnimState == 2:
@@ -108,10 +112,18 @@ class EntityLight(Entity):
                     else:   self.EntityRect[1] += 8
                     if self.EntityRect[1] > 240:
                         entity_handler.destroyEntity(self.EntityID)
-        else:
+        elif self.SizeDelay == 0:
             self.EntityRect[0] = self.LightX
             self.EntityRect[1] = self.LightY
         
+        if self.SizeDelay > 0:
+            self.SizeDelay -= 1
+            if self.SizeDelay > 15: self.EntityRect[1] = self.LightY - (self.MaxSizeDelay - self.SizeDelay)/4
+            else: self.EntityRect[1] = self.LightY - self.SizeDelay/4
+        elif self.AnimState == 0:
+            self.EntityRect[0] = self.LightX
+            self.EntityRect[1] = self.LightY
+
 
     def initialFlip(self,entity_handler):
         for entity in entity_handler.EntityList:
@@ -132,6 +144,8 @@ class EntityLight(Entity):
             self.EntityImageSource = "light_off"
             if (self.getLightControl(entity_handler) != None):
                 self.getLightControl(entity_handler).PowerGrid[self.PowerX][self.PowerY] = 0
+
+        self.SizeDelay = self.MaxSizeDelay
 
     def getLightControl(self,entity_handler):
         for entity in entity_handler.EntityList:
