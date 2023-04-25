@@ -41,13 +41,7 @@ class EntityLightControl(Entity):
 
             # self.SolutionGrid = [[1 for i in range(self.GridWidth)] for j in range(self.GridHeight)]
 
-            self.SolutionGrid = self.getSolutionGrid(0)
 
-            print(self.SolutionGrid)
-
-            self.PowerGrid = [row[:] for row in self.SolutionGrid]
-
-            print(self.PowerGrid)
 
             self.NumberOfComputerFlips =  7#should be 7
 
@@ -61,6 +55,7 @@ class EntityLightControl(Entity):
 
             self.MaxMoves = self.NumberOfComputerFlips
 
+            '''
             moveSpacing = 10
             moveX = 80-(self.MaxMoves)*moveSpacing/2-1
             moveY = 110
@@ -72,11 +67,13 @@ class EntityLightControl(Entity):
             for u in range(self.MaxMoves):
                 if u <= self.NumberOfPlayerFlips: self.EntityImages.append(["move_on",pygame.Rect(moveX+moveSpacing*u,moveY,8,8),True])
                 else: self.EntityImages.append(["move_off",pygame.Rect(moveX+moveSpacing*u,moveY,8,8),True])
-
+            '''
             self.MoveTracker = []
 
             self.TrackerState = 0
 
+            self.Difficulty = 0
+            
 
 
         except:
@@ -92,6 +89,46 @@ class EntityLightControl(Entity):
         that don't make sense to include in __init__
         """
 
+        if self.Difficulty == 0:
+            self.GridHeight = 7
+            self.GridWidth = 7
+            self.NumberOfComputerFlips = 7
+        elif self.Difficulty == 1:
+            self.GridHeight = 5
+            self.GridWidth = 5
+            self.NumberOfComputerFlips = 4
+        elif self.Difficulty == 2:
+            self.GridHeight = 6
+            self.GridWidth = 6
+            self.NumberOfComputerFlips = 5
+
+        #====================
+
+        self.SolutionGrid = self.getSolutionGrid(0)
+
+        print(self.SolutionGrid)
+
+        self.PowerGrid = [row[:] for row in self.SolutionGrid]
+
+        print(self.PowerGrid)
+
+        self.NumberOfPlayerFlips = self.NumberOfComputerFlips
+
+        self.MaxMoves = self.NumberOfComputerFlips
+
+        moveSpacing = 10
+        moveX = 80-(self.MaxMoves)*moveSpacing/2-1
+        moveY = 110
+
+        self.TrackerY = moveY
+
+        moveY += 32
+
+        for u in range(self.MaxMoves):
+            if u <= self.NumberOfPlayerFlips: self.EntityImages.append(["move_on",pygame.Rect(moveX+moveSpacing*u,moveY,8,8),True])
+            else: self.EntityImages.append(["move_off",pygame.Rect(moveX+moveSpacing*u,moveY,8,8),True])
+
+        #====================
 
         spacing = 12
 
