@@ -80,6 +80,7 @@ class EntityTitle(Entity):
         for event in self.Inputs:
             if event.type == pygame.MOUSEBUTTONUP:
                 if entity_handler.mouseOverEntity(self):
+                    sound.playSound("button_press")
                     if self.EntityImageSource == "title_on": self.EntityImageSource = "title_off"
                     else: self.EntityImageSource = "title_on"
 
@@ -94,6 +95,7 @@ class EntityTitle(Entity):
             else:
                 self.EntityRect[1] = 32
                 self.AnimState = 0
+                sound.playSound("gui_fall")
         elif (self.AnimState == 2):
             if (self.EntityRect[1] < 152): self.EntityRect[1] += 3
             else:

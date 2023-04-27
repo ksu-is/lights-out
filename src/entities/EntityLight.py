@@ -87,6 +87,7 @@ class EntityLight(Entity):
                 if entity_handler.mouseOverEntity(self):
                     if self.getCanPlayerMove(entity_handler):
                         self.initialFlip(entity_handler)
+                        sound.playSound("light_press")
                         self.getLightControl(entity_handler).MoveTracker.append((self.PowerX,self.PowerY))
                         # self.getLightControl(entity_handler).CanPlayerMove = False
 
@@ -103,6 +104,7 @@ class EntityLight(Entity):
                     if self.EntityRect[1] < self.LightY:
                         self.EntityRect[1] += 5
                     elif self.EntityRect[1] >= self.LightY:
+                        sound.playSound("light_fall")
                         self.EntityRect[1] = self.LightY
                         self.AnimState = 2
                         self.AnimDelay = 15#15

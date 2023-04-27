@@ -87,7 +87,9 @@ class EntityAward(Entity):
             self.AnimDelay -= 1
             if self.AnimState == 2:
                 self.EntityRect[1] = self.AwardY + self.AnimDelay/2
-                if self.AnimDelay == 0: self.AnimState = 0
+                if self.AnimDelay == 0:
+                    self.AnimState = 0
+                    sound.playSound("award_fall")
         else:
             if self.AnimState == 0:
                 self.EntityRect[0] = self.AwardX

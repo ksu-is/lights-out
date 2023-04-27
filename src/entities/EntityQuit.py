@@ -90,6 +90,7 @@ class EntityQuit(Entity):
             if event.type == pygame.MOUSEBUTTONUP:
                 if entity_handler.mouseOverEntity(self):
                     if self.getCanPlayerMove(entity_handler):
+                        sound.playSound("button_press")
                         self.EntityImageSource = "quit_on"
                         self.getLightControl(entity_handler).EntityTimers.append([5, self.getLightControl(entity_handler).quitGame])
                         self.getLightControl(entity_handler).CanPlayerMove = False

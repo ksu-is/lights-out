@@ -91,6 +91,7 @@ class EntityUndo(Entity):
             if event.type == pygame.MOUSEBUTTONUP:
                 if entity_handler.mouseOverEntity(self):
                     if self.getCanPlayerMove(entity_handler) and len(self.getLightControl(entity_handler).MoveTracker) > 0:
+                        sound.playSound("button_press")
                         self.EntityImageSource = "undo_on"
                         self.getLightControl(entity_handler).EntityTimers.append([30, self.getLightControl(entity_handler).undoMove])
                         self.getLightControl(entity_handler).CanPlayerMove = False

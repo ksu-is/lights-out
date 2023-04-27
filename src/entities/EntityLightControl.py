@@ -283,7 +283,7 @@ class EntityLightControl(Entity):
     def checkForSolution(self,entity_handler):
         if (self.PowerGrid == self.SolutionGrid):
             self.CanPlayerMove = False
-
+            sound.playSound("stage_clear")
 
             for entity in entity_handler.EntityList:
                 if entity.EntityType == 0:
@@ -294,6 +294,7 @@ class EntityLightControl(Entity):
 
             self.EntityTimers.append([270, self.setupGrid])
         elif self.NumberOfPlayerFlips == 1:
+            sound.playSound("stage_incorrect")
             self.CanPlayerMove = False
             for i_entity in entity_handler.EntityList:
                 if i_entity.EntityType == 0:

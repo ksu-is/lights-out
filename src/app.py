@@ -118,6 +118,13 @@ pygame.display.set_icon(render.getImageSource("score_big").ImageLoad)
 #region Handle sounds (add sounds here)
 
 sound.addSoundSource("main_menu","ambientmain_0")
+sound.addSoundSource("button_press","ambientmain_0")
+sound.addSoundSource("stage_clear","ambientmain_0")
+sound.addSoundSource("stage_incorrect","ambientmain_0")
+sound.addSoundSource("light_press","ambientmain_0")
+sound.addSoundSource("award_fall","ambientmain_0")
+sound.addSoundSource("light_fall","ambientmain_0")
+sound.addSoundSource("gui_fall","ambientmain_0")
 
 error.addToActionLog("Loading assets: All sounds loaded")
 

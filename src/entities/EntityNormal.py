@@ -112,6 +112,7 @@ class EntityNormal(Entity):
         if (self.AnimState == 1):
             if (self.EntityRect[1] < 64): self.EntityRect[1] += 3
             else:
+                sound.playSound("gui_fall")
                 self.EntityRect[1] = 64
                 self.AnimState = 0
         elif (self.AnimState == 2):
