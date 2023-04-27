@@ -7,6 +7,7 @@ import util
 from common import states
 import error
 import sound
+import math
 from entities.Entity import Entity
 
 class EntityTitle(Entity):
@@ -34,6 +35,7 @@ class EntityTitle(Entity):
             self.Inputs = []
 
             self.AnimState = 0
+            self.AnimTimer = 0
 
         except:
             error.causeError("Entity Initializing Error","There was an error in the __init__ function for an entity. This means it happened BEFORE finishing either the createEntity or onCreated functions")
@@ -83,7 +85,11 @@ class EntityTitle(Entity):
 
         pass
 
-        if (self.AnimState == 1):
+        if self.AnimState == 0:
+            if self.AnimTimer < 999999: self.AnimTimer += 1
+            else: self.AnimTimer = 0
+            self.EntityRect[1] = 32+math.cos(self.AnimTimer/60)*2
+        elif (self.AnimState == 1):
             if (self.EntityRect[1] < 32): self.EntityRect[1] += 3
             else:
                 self.EntityRect[1] = 32
@@ -92,6 +98,8 @@ class EntityTitle(Entity):
             if (self.EntityRect[1] < 152): self.EntityRect[1] += 3
             else:
                 self.EntityRect[1] = 152
-                self.AnimState = 0
+                self.AnimState = 3
+        elif self.AnimState == 3:
+            self.EntityRect[1] = 152
 
 
