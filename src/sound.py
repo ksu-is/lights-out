@@ -12,6 +12,7 @@ import util
 import error
 
 pygame.mixer.init()
+pygame.mixer.set_num_channels(16)
 
 SoundSourceList = []
 

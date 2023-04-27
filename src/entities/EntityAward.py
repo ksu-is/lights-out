@@ -41,6 +41,8 @@ class EntityAward(Entity):
 
             self.Inputs = []
 
+            self.Flag = True
+
         except:
             error.causeError("Entity Initializing Error","There was an error in the __init__ function for an entity. This means it happened BEFORE finishing either the createEntity or onCreated functions")
 
@@ -104,7 +106,11 @@ class EntityAward(Entity):
             if self.AnimDelay > 0: self.AnimDelay -= 1
             else:
                 if self.EntityRect[1] < self.AwardY+16: self.EntityRect[1] += 2
-                else:   self.EntityRect[1] += 4
+                else:   
+                    self.EntityRect[1] += 4
+                    if self.Flag:
+                        self.Flag = False
+                        sound.playSound("award_fall")
                 
 
         pass
