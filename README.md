@@ -29,7 +29,7 @@ The game will be entirely graphical, using the output line strictly for debuggin
 - [x] Create functionality for losing a round, and resetting
 - [x] Create title screen, difficulty selection, and transitions
 - [x] Add different difficulties based on selection
-- [ ] Improve presentation, polish
+- [x] Improve presentation, polish
 
 --------
 
