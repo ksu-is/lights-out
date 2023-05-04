@@ -2,6 +2,12 @@
  
 -------
 
+### Recording:
+
+https://kennesawedu.sharepoint.com/sites/Team-IS3020Sp23/Shared%20Documents/Projects%20and%20Presentations/Recordings/Meeting%20in%20_Projects%20and%20Presentations_-20230504_150035-Meeting%20Recording.mp4?web=1
+
+-------
+
 ### Introduction
 
 This is Declan Reuschel's project for the IS 3020 class. It is a graphical game built in Python, based on the
